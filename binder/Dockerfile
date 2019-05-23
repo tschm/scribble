@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir /home/beakerx/tmp && \
     pip install --no-cache-dir -r /home/beakerx/tmp/requirements.txt && \
     rm -r /home/beakerx/tmp
 
-WORKDIR ${WORK}
+#WORKDIR ${WORK}
