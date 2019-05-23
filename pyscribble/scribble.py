@@ -1,4 +1,5 @@
 import numpy as np
+import numexpr as ne
 
 from pyscribble.letter import letter
 
@@ -13,7 +14,7 @@ def __segment(points, n=100):
         yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
 
-def scribble(axes, text, f=lambda x: x, title="Lydia & Thomas, August 17, Rhodes House", **kwargs):
+def scribble(axes, text, f, title="Lydia & Thomas, August 17, Rhodes House", **kwargs):
     axes.set_axis_off()
 
     for n, l in enumerate(text):
@@ -25,7 +26,8 @@ def scribble(axes, text, f=lambda x: x, title="Lydia & Thomas, August 17, Rhodes
 
         # each segment is a straight line of n points
         for z in __segment(points, n=100):
+            t = ne.evaluate(f)
             # plot the name in the complex plane
-            axes.plot(f(z).real, f(z).imag, **kwargs)
+            axes.plot(t.real, t.imag, **kwargs)
 
     axes.set_title(title)
