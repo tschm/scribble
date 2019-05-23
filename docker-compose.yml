@@ -3,7 +3,7 @@ services:
   jupyter:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: binder/Dockerfile
     volumes:
       - ./work:${WORK}
     ports:

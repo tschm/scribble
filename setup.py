@@ -8,5 +8,5 @@ setup(
     packages=find_packages(include=["pyscribble*"]),
     author='Thomas Schmelzer',
     author_email='thomas.schmelzer@gmail.com',
-    description='', install_requires=['pandas>=0.24.0']
+    description='', install_requires=['numpy']
 )
