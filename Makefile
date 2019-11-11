@@ -31,7 +31,7 @@ tag:
 	git push --tags
 
 hub: tag
-	docker build --tag ${IMAGE}:latest --no-cache --target production .
+	docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache --target production .
 	docker push ${IMAGE}:latest
 	docker tag ${IMAGE}:latest ${IMAGE}:${PROJECT_VERSION}
 	docker push ${IMAGE}:${PROJECT_VERSION}
