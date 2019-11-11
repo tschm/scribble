@@ -2,7 +2,6 @@
 PROJECT_VERSION := $(shell python setup.py --version)
 
 SHELL := /bin/bash
-PACKAGE := risk_orm
 IMAGE := tschm/scribble
 
 # needed to get the ${PORT} environment variable
@@ -31,7 +30,7 @@ tag:
 	git push --tags
 
 hub: tag
-	docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache --target production .
+	docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache .
 	docker push ${IMAGE}:latest
 	docker tag ${IMAGE}:latest ${IMAGE}:${PROJECT_VERSION}
 	docker push ${IMAGE}:${PROJECT_VERSION}
