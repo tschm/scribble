@@ -1,12 +1,10 @@
 #!make
-PROJECT_VERSION := $(shell python setup.py --version)
+PROJECT_VERSION := 0.0.5
 
 SHELL := /bin/bash
 IMAGE := tschm/scribble
-
-# needed to get the ${PORT} environment variable
-include .env
-export
+PORT  := 8805
+WORK  := /home/jovyan/work
 
 .PHONY: help build jupyter tag hub
 
@@ -29,13 +27,17 @@ tag:
 	git tag -a ${PROJECT_VERSION} -m "new tag"
 	git push --tags
 
-hub: tag
-	docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache .
-	docker push ${IMAGE}:latest
-	docker tag ${IMAGE}:latest ${IMAGE}:${PROJECT_VERSION}
-	docker push ${IMAGE}:${PROJECT_VERSION}
-	docker rmi -f ${IMAGE}:${PROJECT_VERSION}
+#hub: tag
+	#docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache .
+	#docker push ${IMAGE}:latest
+	#docker tag ${IMAGE}:latest ${IMAGE}:${PROJECT_VERSION}
+	#docker push ${IMAGE}:${PROJECT_VERSION}
+	#docker rmi -f ${IMAGE}:${PROJECT_VERSION}
 
 jupyter: build
 	echo "http://localhost:${PORT}"
+	docker-compose up jupyter
+
+jupyterlab: build
+	echo "http://localhost:${PORT}/lab"
 	docker-compose up jupyter
