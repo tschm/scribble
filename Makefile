@@ -1,9 +1,9 @@
 #!make
-PROJECT_VERSION := 0.0.5
+PROJECT_VERSION := 0.0.6
 
 SHELL := /bin/bash
 IMAGE := tschm/scribble
-PORT  := 8805
+PORT  := 8888
 WORK  := /home/jovyan/work
 
 .PHONY: help build jupyter tag hub
@@ -26,13 +26,6 @@ build:
 tag:
 	git tag -a ${PROJECT_VERSION} -m "new tag"
 	git push --tags
-
-#hub: tag
-	#docker build -f binder/Dockerfile --tag ${IMAGE}:latest --no-cache .
-	#docker push ${IMAGE}:latest
-	#docker tag ${IMAGE}:latest ${IMAGE}:${PROJECT_VERSION}
-	#docker push ${IMAGE}:${PROJECT_VERSION}
-	#docker rmi -f ${IMAGE}:${PROJECT_VERSION}
 
 jupyter: build
 	echo "http://localhost:${PORT}"

@@ -7,4 +7,4 @@ services:
     volumes:
       - ./work:/home/jovyan/work
     ports:
-      - "8805:8888"
+      - "8888:8888"
