@@ -1,36 +1,43 @@
-#!make
-PROJECT_VERSION := 0.0.6
+.DEFAULT_GOAL := help
 
-SHELL := /bin/bash
-IMAGE := tschm/scribble
-PORT  := 8888
-WORK  := /home/jovyan/work
+VENV :=.venv
 
-.PHONY: help build jupyter tag hub
+kernel = scribble
+folder = notebooks
 
-.DEFAULT: help
+.PHONY: venv
+venv: ## Create the virtual environment
+	python -m venv ${VENV}
 
-help:
-	@echo "make build"
-	@echo "       Build the docker image."
-	@echo "make jupyter"
-	@echo "       Start the Jupyter server."
-	@echo "make tag"
-	@echo "       Make a tag on Github."
-	@echo "make hub"
-	@echo "       Push Docker Image to DockerHub."
+.PHONY: install
+install:  venv ## Install a virtual environment
+	${VENV}/bin/pip install --upgrade pip
+	${VENV}/bin/pip install -r requirements.txt
 
-build:
-	docker-compose build jupyter
+.PHONY: fmt
+fmt: venv ## Run autoformatting and linting
+	${VENV}/bin/pip install pre-commit
+	${VENV}/bin/pre-commit install
+	${VENV}/bin/pre-commit run --all-files
 
-tag:
-	git tag -a ${PROJECT_VERSION} -m "new tag"
-	git push --tags
+.PHONY: clean
+clean:  ## Clean up caches and build artifacts
+	@git clean -X -d -f
 
-jupyter: build
-	echo "http://localhost:${PORT}"
-	docker-compose up jupyter
+.PHONY: help
+help:  ## Display this help screen
+	@echo -e "\033[1mAvailable commands:\033[0m"
+	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' | sort
 
-jupyterlab: build
-	echo "http://localhost:${PORT}/lab"
-	docker-compose up jupyter
+
+.PHONY: jupyter
+jupyter: install ## Start jupyter lab
+	${VENV}/bin/pip install jupyterlab
+	${VENV}/bin/jupyter lab notebooks
+
+.PHONY: kernel
+kernel: install ## Build a kernel for jupyter, use make kernel kernel="Name of kernel"
+	@echo $(kernel)
+	${VENV}/bin/pip install ipykernel
+	${VENV}/bin/python -m ipykernel install --user --name=$(kernel)
+
