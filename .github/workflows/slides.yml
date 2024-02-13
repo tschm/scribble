@@ -29,7 +29,7 @@ jobs:
           jupyter nbconvert --output-dir=./slides ./work/*.ipynb --to html
 
       - name: Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           # declare the artifacts...
           name: slides
