@@ -5,13 +5,17 @@ app = marimo.App()
 
 
 @app.cell
-def __():
+def __(__file__):
+    from pathlib import Path
+
     import matplotlib.pyplot as plt
     import numpy as np
+    import pandas as pd
 
     from pyscribble.scribble import scribble
 
-    return np, plt, scribble
+    path = Path(__file__).parent
+    return np, path, pd, plt, scribble
 
 
 @app.cell
@@ -39,36 +43,17 @@ def __(plt, scribble):
 
 
 @app.cell
-def __(EasyForm):
-    form = EasyForm("Create a name tag")
-    form.addTextField("Text")
-    form["Text"] = "Hans Dampf"
-    form.addTextField("Title")
-    form["Title"] = "I am the title"
-    form.addTextField("Function")
-    form["Function"] = "tanh((-1+2j)*z)"
-    form.addButton("Go!", tag="run")
-    form
-    return (form,)
+def __(wedding):
+    text = "Hans Dampf"
+    title = "My wedding"
+    function = "tanh((-1+2j)*z)"
+    wedding(word=text, title=title, f=function)
+    return function, text, title
 
 
 @app.cell
-def __(form, wedding):
-    # Cell tags: run
-    wedding(form["Text"], f=form["Function"], title=form["Title"])
-    return
-
-
-@app.cell
-def __():
-    import pandas as pd
-
-    return (pd,)
-
-
-@app.cell
-def __(pd, wedding):
-    frame = pd.read_csv("names.csv", header=0)
+def __(pd, path, wedding):
+    frame = pd.read_csv(path / "input" / "names.csv", header=0)
     for index, row in frame.iterrows():
         wedding(word=row["Name"], f=row["Function"], title="Lydia & Thomas")
     return frame, index, row

@@ -14,5 +14,3 @@ build
 .config
 *.pdf
 *.png
-
-names.csv
