@@ -13,10 +13,6 @@ fmt:  ## Run autoformatting and linting
 	@uv run pre-commit install
 	@uv run pre-commit run --all-files
 
-.PHONY: test
-test: install ## Run tests
-	@uv run pytest
-
 .PHONY: clean
 clean:  ## Clean up caches and build artifacts
 	@git clean -X -d -f
