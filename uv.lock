@@ -564,27 +564,25 @@ name = "scribble"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "matplotlib" },
     { name = "numexpr" },
     { name = "numpy" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "matplotlib" },
     { name = "pre-commit" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "matplotlib", specifier = ">=3.9.3" },
     { name = "numexpr", specifier = ">=2.10.2" },
     { name = "numpy", specifier = ">=2.1.3" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "matplotlib", specifier = ">=3.9.3" },
-    { name = "pre-commit", specifier = ">=4.0.1" },
-]
+dev = [{ name = "pre-commit", specifier = ">=4.0.1" }]
 
 [[package]]
 name = "six"
