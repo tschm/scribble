@@ -24,7 +24,6 @@ def __(path, plt, wedding):
             wedding(word=name, f=func, title="Wedding Lydia & Thomas")
             # plt.savefig(f"{name}.png")
             plt.show()
-    return f, func, line, name
 
 
 if __name__ == "__main__":
