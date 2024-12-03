@@ -15,7 +15,7 @@ def __(__file__):
     from pyscribble.scribble import scribble
 
     path = Path(__file__).parent
-    return np, path, pd, plt, scribble
+    return Path, np, path, pd, plt, scribble
 
 
 @app.cell
@@ -36,8 +36,7 @@ def __(plt, scribble):
             rotation=180,
         )
 
-        fig.savefig("data/{name}.pdf".format(name=word))
-        fig.savefig("data/{name}.png".format(name=word))
+        plt.show()
 
     return (wedding,)
 
@@ -52,7 +51,7 @@ def __(wedding):
 
 
 @app.cell
-def __(pd, path, wedding):
+def __(path, pd, wedding):
     frame = pd.read_csv(path / "input" / "names.csv", header=0)
     for index, row in frame.iterrows():
         wedding(word=row["Name"], f=row["Function"], title="Lydia & Thomas")

@@ -1,4 +1,4 @@
 ,Name,Function
-1,Karin,tanh((-1+2j)*z)
-2,Nick,sinh(3*z)
+1,Karin Steinbach,tanh((-1+2j)*z)
+2,Nick Trefethen,sinh(3*z)
 3,Tom Brennan,exp((-1+2j)*z)
