@@ -1,7 +1,5 @@
 # scribble
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/tschm/scribble/master?filepath=work/Scribble.ipynb)
-
 I am using this little tool to create wedding name
 plates for all guests of my (first) wedding.
 The underlying idea is described (and stolen from) here:

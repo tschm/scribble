@@ -1,7 +1,7 @@
 import numexpr as ne
 import numpy as np
 
-from scribble.letter import letter
+from pyscribble.letter import letter
 
 
 def __segment(points, n=100):

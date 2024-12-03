@@ -1,18 +1,17 @@
 import marimo
 
-__generated_with = "0.9.27"
+__generated_with = "0.9.28"
 app = marimo.App()
 
 
-app._unparsable_cell(
-    r"""
-    import numpy as np
+@app.cell
+def __():
     import matplotlib.pyplot as plt
-    from beakerx import *
+    import numpy as np
+
     from pyscribble.scribble import scribble
-    """,
-    name="__",
-)
+
+    return np, plt, scribble
 
 
 @app.cell
