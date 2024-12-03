@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numexpr as ne
 import numpy as np
 
@@ -31,3 +32,22 @@ def scribble(axes, text, f, title="Lydia & Thomas, August 17, Rhodes House", **k
             axes.plot(t.real, t.imag, **kwargs)
 
     axes.set_title(title)
+
+
+def wedding(word, f, title):
+    fig, axes = plt.subplots(
+        nrows=2, ncols=1, figsize=(8.27, 11.69), subplot_kw={"aspect": "equal"}
+    )
+
+    scribble(axes[1], text=word, f=f, title=title, linewidth=2, color="blue")
+
+    axes[0].set_axis_off()
+    axes[0].text(
+        0.5,
+        0.5,
+        "{name}\n{function}".format(name=word, function=f),
+        horizontalalignment="right",
+        rotation=180,
+    )
+
+    return axes

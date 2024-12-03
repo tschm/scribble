@@ -6,7 +6,6 @@ __pycache__
 
 *.dot
 *.svg
-.ipynb_checkpoints
 .config
 *.pdf
 *.png
