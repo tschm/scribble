@@ -1,7 +1,7 @@
-import numpy as np
 import numexpr as ne
+import numpy as np
 
-from .letter import letter
+from scribble.letter import letter
 
 
 def __segment(points, n=100):
@@ -10,16 +10,16 @@ def __segment(points, n=100):
     There are straight segments between two adjacent points
     We represent each such segment as a collection of n auxilliary points
     """
-    for (a, b) in zip(points[:-1], points[1:]):
+    for a, b in zip(points[:-1], points[1:]):
         yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
 
 def scribble(axes, text, f, title="Lydia & Thomas, August 17, Rhodes House", **kwargs):
     axes.set_axis_off()
 
-    for n, l in enumerate(text):
+    for n, _letter in enumerate(text):
         # move a letter into the complex plane
-        points = letter(l) + n
+        points = letter(_letter) + n
 
         # move the points to the unit-square
         points = 2 * points / len(text) - 1
