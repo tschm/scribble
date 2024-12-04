@@ -12,7 +12,7 @@ def series(string, n, str="sinh(3*z)"):
         # move pts to unit square
         pts = 2 * pts / len(string) - 1
 
-        yield _letter, ne.evaluate(str, z=list(__segment(pts, n=n)))
+        yield _letter, ne.evaluate(str, local_dict={"z": list(__segment(pts, n=n))})
 
 
 def __segment(points, n=100):
