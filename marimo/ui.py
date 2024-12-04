@@ -1,34 +1,87 @@
-import marimo as mo
+import marimo
 
 __generated_with = "0.9.29"
-app = mo.App()
+app = marimo.App()
 
 
 @app.cell
-def inputs():
-    string1 = mo.ui.text(label="First String")
-    string2 = mo.ui.text(label="Second String")
-    string3 = mo.ui.text(label="Third String")
-    submit_button = mo.ui.button(label="Submit")
+def __():
+    import matplotlib.pyplot as plt
 
-    return string1, string2, string3, submit_button
+    import marimo as mo
+    from pyscribble.scribble import wedding
+
+    return (mo, plt, wedding)
 
 
 @app.cell
-def output(string1, string2, string3, submit_button):
-    result = mo.md(
+def __input_name(mo):
+    name = mo.ui.text(placeholder="Name...")
+    mo.md(
+        f"""
+        Enter the name of the guest: {name}
+        """
+    )
+    return (name,)
+
+
+@app.cell
+def __input_function(mo):
+    options = ["tanh((-1+2j)*z)", "sinh(3*z)", "exp((-1+2j)*z)"]
+    dropdown = mo.ui.dropdown(options=options)
+    mo.md(
+        f"""
+        Enter the complex function: {dropdown}
+        """
+    )
+    return (dropdown,)
+
+
+@app.cell
+def __input_event(mo):
+    event = mo.ui.text(placeholder="Event...")
+    mo.md(
+        f"""
+        Enter the name of the event: {event}
+        """
+    )
+    return (event,)
+
+
+@app.cell
+def __output(mo, wedding, plt, name, dropdown, event):
+    mo.md(
         f"""
     ### Submitted Strings
-
-    {submit_button()}
-
-    1. First String: **{string1.value}**
-    2. Second String: **{string2.value}**
-    3. Third String: **{string3.value}**
+    1. First String: **{name.value}**
+    2. Second String: **{dropdown.value}**
+    3. Third String: **{event.value}**
     """
     )
+    print(dropdown.value)
+    print(name.value)
+    print(event.value)
 
-    return result
+    empty = False
+    for value in [dropdown.value, event.value, name.value]:
+        if value == "":
+            empty = True
+
+    if not empty:
+        print("Try graph")
+        fig = wedding(word=name.value, f=dropdown.value, title=event.value)
+        print(fig)
+        # plt.show()
+
+        # plt.plot([2, 1], figsize=(8.27, 11.69), subplot_kw={"aspect": "equal"})
+
+        # fig, axes = plt.subplots(
+        #    nrows=2, ncols=1, figsize=(8.27, 11.69), subplot_kw={"aspect": "equal"}
+        # )
+        # plt.gcf() gets the current figure
+        mo.mpl.interactive(fig)
+
+    return
 
 
 if __name__ == "__main__":
