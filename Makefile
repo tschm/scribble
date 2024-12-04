@@ -17,6 +17,10 @@ fmt:  ## Run autoformatting and linting
 clean:  ## Clean up caches and build artifacts
 	@git clean -X -d -f
 
+.PHONY: test
+test: install ## Run tests
+	@uv run pytest
+
 .PHONY: help
 help:  ## Display this help screen
 	@echo -e "\033[1mAvailable commands:\033[0m"
