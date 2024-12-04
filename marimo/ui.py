@@ -6,12 +6,9 @@ app = marimo.App()
 
 @app.cell
 def __():
-    import matplotlib.pyplot as plt
-
     import marimo as mo
-    from pyscribble.scribble import wedding
 
-    return (mo, plt, wedding)
+    return (mo,)
 
 
 @app.cell
@@ -49,7 +46,7 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(mo, wedding, plt, name, dropdown, event):
+def __output(mo, name, dropdown, event):
     mo.md(
         f"""
     ### Submitted Strings
@@ -69,17 +66,6 @@ def __output(mo, wedding, plt, name, dropdown, event):
 
     if not empty:
         print("Try graph")
-        fig = wedding(word=name.value, f=dropdown.value, title=event.value)
-        print(fig)
-        # plt.show()
-
-        # plt.plot([2, 1], figsize=(8.27, 11.69), subplot_kw={"aspect": "equal"})
-
-        # fig, axes = plt.subplots(
-        #    nrows=2, ncols=1, figsize=(8.27, 11.69), subplot_kw={"aspect": "equal"}
-        # )
-        # plt.gcf() gets the current figure
-        mo.mpl.interactive(fig)
 
     return
 
