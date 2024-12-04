@@ -1,9 +1,7 @@
-from itertools import chain
-
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from .scribble import series
+from ._scribble import series
 
 
 # Create the figure with subplots: 2 rows, 1 column
@@ -106,11 +104,11 @@ def create(name, fct, event, n=100):
     fig = __create_fig()
     __create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-    d = list(series(name, n=n, str=fct))
+    segments = list(series(name, n=n, str=fct))
 
     # d is now a list of list. Flatten it
-    d = list(chain.from_iterable(d))
+    # d = list(chain.from_iterable(d))
 
-    __plot_letters(fig, d)
+    __plot_letters(fig, segments)
     __remove_axis(fig)
     return fig

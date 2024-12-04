@@ -1,4 +1,4 @@
-from pyscribble.plot import create
+from pyscribble import create
 
 name = "Thomas Schmelzer"
 fct = "sinh(3*z)"

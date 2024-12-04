@@ -7,7 +7,7 @@ app = marimo.App()
 @app.cell
 def __():
     import marimo as mo
-    from pyscribble.plot import create
+    from pyscribble import create
 
     return create, mo
 

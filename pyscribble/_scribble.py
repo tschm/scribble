@@ -1,10 +1,13 @@
+from itertools import chain
+
 import numexpr as ne
 import numpy as np
 
-from .letter import letter
+from ._letter import letter
 
 
 def series(string, n, str):
+    segments = []
     for i, _letter in enumerate(string):
         # move pts to the correction position in a word
         pts = letter(_letter) + i
@@ -12,7 +15,10 @@ def series(string, n, str):
         # move pts to unit square
         pts = 2 * pts / len(string) - 1
 
-        yield ne.evaluate(str, local_dict={"z": list(__segment(pts, n=n))})
+        segments.append(ne.evaluate(str, local_dict={"z": list(__segment(pts, n=n))}))
+
+    # segments is a list of list, flatten it
+    return list(chain.from_iterable(segments))
 
 
 def __segment(points, n=100):
