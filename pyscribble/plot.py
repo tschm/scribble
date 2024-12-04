@@ -1,3 +1,5 @@
+from itertools import chain
+
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
@@ -83,29 +85,31 @@ def __plot_letters(fig, d):
     # Create traces for each segment
     traces = []
 
-    for _, segments in d.items():
-        for segment in segments:
-            trace = go.Scatter(
-                x=segment.real,  # Real part of the complex number
-                y=segment.imag,  # Imaginary part of the complex number
-                mode="markers+lines",  # Display both markers and lines
-                showlegend=False,
-                line={"width": 3, "color": "blue"},  # Line style
-                marker={"size": 3, "color": "blue"},  # Marker style
-            )
-            traces.append(trace)
+    for segment in d:
+        trace = go.Scatter(
+            x=segment.real,  # Real part of the complex number
+            y=segment.imag,  # Imaginary part of the complex number
+            mode="markers+lines",  # Display both markers and lines
+            showlegend=False,
+            line={"width": 3, "color": "blue"},  # Line style
+            marker={"size": 3, "color": "blue"},  # Marker style
+        )
+        traces.append(trace)
 
     # Add all traces to the bottom subplot
     for trace in traces:
         fig.add_trace(trace, row=2, col=1)
 
 
-def create(name, fct, n=100):
+def create(name, fct, event, n=100):
     # Create the figure with subplots: 2 rows, 1 column
     fig = __create_fig()
-    __create_annotation(fig, word=f"{name}<br>{fct}")
+    __create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-    d = dict(series(name, n=n, str=fct))
+    d = list(series(name, n=n, str=fct))
+
+    # d is now a list of list. Flatten it
+    d = list(chain.from_iterable(d))
 
     __plot_letters(fig, d)
     __remove_axis(fig)

@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.9.29"
+__generated_with = "0.9.30"
 app = marimo.App()
 
 
@@ -25,13 +25,13 @@ def __input_name(mo):
 @app.cell
 def __input_function(mo):
     options = ["tanh((-1+2j)*z)", "sinh(3*z)", "exp((-1+2j)*z)"]
-    dropdown = mo.ui.dropdown(options=options)
+    dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
     mo.md(
         f"""
         Enter the complex function: {dropdown}
         """
     )
-    return (dropdown,)
+    return dropdown, options
 
 
 @app.cell
@@ -46,27 +46,11 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(mo, name, dropdown, event):
-    mo.md(
-        f"""
-    ### Submitted Strings
-    1. First String: **{name.value}**
-    2. Second String: **{dropdown.value}**
-    3. Third String: **{event.value}**
-    """
-    )
-    print(dropdown.value)
-    print(name.value)
-    print(event.value)
+def __output(dropdown, name, event):
+    from pyscribble.plot import create
 
-    empty = False
-    for value in [dropdown.value, event.value, name.value]:
-        if value == "":
-            empty = True
-
-    if not empty:
-        print("Try graph")
-
+    fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
+    fig.show()
     return
 
 
