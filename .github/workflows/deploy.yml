@@ -30,6 +30,11 @@ jobs:
         run: |
           uv run marimo export html marimo/ui.py > index.html
 
+      - name: List Export Result
+        run: |
+          ls -la
+          cat index.html || echo "No index.html generated"
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
