@@ -14,8 +14,8 @@ COPY --link pyscribble ./pyscribble/
 COPY --link requirements.txt app.py ./
 
 # Combine RUN commands to reduce layers
-RUN uv pip install -r requirements.txt && \
-    uv pip install marimo && \
+RUN uv pip install --no-cache-dir -r requirements.txt && \
+    uv pip install --no-cache-dir marimo && \
     rm requirements.txt
 
 # Create non-root user in a single RUN command
