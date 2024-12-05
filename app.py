@@ -5,21 +5,6 @@ app = marimo.App()
 
 
 @app.cell
-def __():
-    import micropip
-
-    return (micropip,)
-
-
-@app.cell
-async def __(micropip):
-    await micropip.install("poetry")
-    import plotly
-
-    return (plotly,)
-
-
-@app.cell
 def __init():
     import marimo as mo
 
