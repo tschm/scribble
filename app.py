@@ -49,9 +49,32 @@ def __input_event(mo):
 
 @app.cell
 def __output(create, dropdown, event, mo, name):
+    from io import BytesIO
+
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
-    mo.ui.plotly(fig),
-    return (fig,)
+
+    img = fig.to_image(format="png")
+    # print(img)
+    data = BytesIO(img)
+
+    # Create a download button for the Plotly graph
+    download_btn = mo.download(
+        data=data,
+        filename=f"{name.value}_{event.value}_plot.png",
+        label="Download",
+        mimetype="image/png",
+    )
+
+    # Display the plot and download button
+    mo.md(
+        f"""
+    {download_btn}
+
+    {mo.ui.plotly(fig)}
+    """
+    )
+
+    # return fig, download_btn
 
 
 if __name__ == "__main__":

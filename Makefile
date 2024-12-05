@@ -1,8 +1,11 @@
 .DEFAULT_GOAL := help
 
+UV_SYSTEM_PYTHON := 1
+
 .PHONY: install
 install:  ## Install a virtual environment
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
+	@uv venv
 	@uv pip install -r requirements.txt
 	@echo 'Please perform'
 	@echo 'source .venv/bin/activate'
