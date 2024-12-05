@@ -30,7 +30,7 @@ help:  ## Display this help screen
 .PHONY: deptry
 deptry: install ## run deptry
 	@uv pip install deptry
-	@uv run deptry .
+	@uv run deptry -vv .
 
 .PHONY: marimo
 marimo: install ## Install Marimo
