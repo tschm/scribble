@@ -6,8 +6,14 @@ app = marimo.App()
 
 @app.cell
 def __():
-    import marimo as mo
     import micropip
+
+    return (micropip,)
+
+
+@app.cell
+def __(micropip):
+    import marimo as mo
 
     # snoballstemmer is a pure Python package
     # and has a pure Python wheel on PyPI
