@@ -31,7 +31,7 @@ jobs:
       - name: Run deptry
         shell: bash
         run: |
-          deptry pyscribble
+          deptry 'pyscribble'
 
       #- uses: cvxgrp/.github/actions/uv/deptry@main
       #  with:
