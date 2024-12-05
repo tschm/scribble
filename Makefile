@@ -29,9 +29,9 @@ help:  ## Display this help screen
 .PHONY: marimo
 marimo: install ## Install Marimo
 	@uv pip install marimo
-	@uv run marimo edit marimo
+	@uv run marimo edit app.py
 
 .PHONY: app
 app: install
 	@uv pip install marimo
-	@uv run marimo run marimo/ui.py
+	@uv run marimo run app.py

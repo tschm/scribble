@@ -7,6 +7,7 @@ app = marimo.App()
 @app.cell
 def __():
     import marimo as mo
+
     from pyscribble import create
 
     return create, mo
@@ -49,11 +50,8 @@ def __input_event(mo):
 @app.cell
 def __output(create, dropdown, event, mo, name):
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
-    mo.vstack(
-        [
-            mo.ui.plotly(fig),
-        ]
-    )
+    mo.ui.plotly(fig),
+
     return (fig,)
 
 
