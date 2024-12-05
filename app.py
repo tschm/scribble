@@ -7,6 +7,12 @@ app = marimo.App()
 @app.cell
 def __():
     import marimo as mo
+    import micropip
+
+    # snoballstemmer is a pure Python package
+    # and has a pure Python wheel on PyPI
+    # so it can be installed directly
+    await micropip.install(["poetry", "numpy", "numexpr"])
 
     from pyscribble import create
 
