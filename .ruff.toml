@@ -4,5 +4,4 @@ exclude = [
 line-length = 120
 target-version = "py312"
 
-[lint]
 select = ["E", "F", "I"]
