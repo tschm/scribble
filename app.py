@@ -12,13 +12,16 @@ def __():
 
 
 @app.cell
-async def __init(micropip):
-    import marimo as mo
-
-    # snoballstemmer is a pure Python package
-    # and has a pure Python wheel on PyPI
-    # so it can be installed directly
+async def __(micropip):
     await micropip.install("poetry")
+    import plotly
+
+    return (plotly,)
+
+
+@app.cell
+def __init():
+    import marimo as mo
 
     from pyscribble import create
 
@@ -63,7 +66,6 @@ def __input_event(mo):
 def __output(create, dropdown, event, mo, name):
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
     mo.ui.plotly(fig),
-
     return (fig,)
 
 
