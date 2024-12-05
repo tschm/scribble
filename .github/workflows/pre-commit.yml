@@ -17,6 +17,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cvxgrp/.github/actions/uv/deptry@main
-        with:
-          source-folder: 'pyscribble'
+
+      - name: Install deptry
+        shell: bash
+        run: |
+          poetry run pip install --no-cache-dir deptry
+
+      - name: Run deptry
+        shell: bash
+        run: |
+          poetry run deptry pyscribble
+
+      #- uses: cvxgrp/.github/actions/uv/deptry@main
+      #  with:
+      #    source-folder: 'pyscribble'
