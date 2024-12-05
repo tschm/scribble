@@ -12,7 +12,7 @@ def __():
 
 
 @app.cell
-def __(micropip):
+async def __init(micropip):
     import marimo as mo
 
     # snoballstemmer is a pure Python package
