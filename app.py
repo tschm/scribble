@@ -18,7 +18,7 @@ async def __init(micropip):
     # snoballstemmer is a pure Python package
     # and has a pure Python wheel on PyPI
     # so it can be installed directly
-    await micropip.install(["poetry", "numexpr"])
+    await micropip.install("poetry")
 
     from pyscribble import create
 
