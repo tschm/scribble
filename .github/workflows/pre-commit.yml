@@ -18,17 +18,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        shell: bash
-        run: |
-          pip install -r requirements.txt
-
-      - name: Install deptry
-        shell: bash
-        run: |
-          pip install --no-cache-dir deptry
-
       - name: Run deptry
         shell: bash
         run: |
-          deptry -vv 'pyscribble'
+          make deptry
+
+          #pip install -r requirements.txt
+
+      #- name: Install deptry
+      #  shell: bash
+      #  run: |
+      #    pip install --no-cache-dir deptry
+
+      #- name: Run deptry
+      #  shell: bash
+      #  run: |
+      #    deptry -vv 'pyscribble'
