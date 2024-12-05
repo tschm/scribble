@@ -21,12 +21,12 @@ jobs:
       - name: Install deptry
         shell: bash
         run: |
-          poetry run pip install --no-cache-dir deptry
+          pip install --no-cache-dir deptry
 
       - name: Run deptry
         shell: bash
         run: |
-          poetry run deptry pyscribble
+          deptry pyscribble
 
       #- uses: cvxgrp/.github/actions/uv/deptry@main
       #  with:
