@@ -57,12 +57,17 @@ def __output(create, dropdown, event, mo, name):
     # print(img)
     data = BytesIO(img)
 
+    disabled = True
+    if dropdown.value and event.value and name.value:
+        disabled = False
+
     # Create a download button for the Plotly graph
     download_btn = mo.download(
         data=data,
         filename=f"{name.value}_{event.value}_plot.png",
         label="Download",
         mimetype="image/png",
+        disabled=disabled,
     )
 
     # Display the plot and download button
