@@ -7,11 +7,9 @@ install:  ## Install a virtual environment
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
 	@uv venv
 	@uv pip install -r requirements.txt
-	@echo 'Please perform'
-	@echo 'source .venv/bin/activate'
 
 .PHONY: fmt
-fmt:  ## Run autoformatting and linting
+fmt:  install ## Run autoformatting and linting
 	@uv pip install pre-commit
 	@uv run pre-commit install
 	@uv run pre-commit run --all-files
@@ -29,11 +27,6 @@ test: install ## Run tests
 help:  ## Display this help screen
 	@echo -e "\033[1mAvailable commands:\033[0m"
 	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' | sort
-
-.PHONY: deptry
-deptry: install ## run deptry
-	@uv pip install deptry
-	@uv run deptry -vv .
 
 .PHONY: marimo
 marimo: install ## Install Marimo
