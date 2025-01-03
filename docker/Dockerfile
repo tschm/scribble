@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.12
 
 # Choose a python version that you know works with your application
 FROM python:3.12-slim
