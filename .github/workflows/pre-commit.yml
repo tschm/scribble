@@ -11,17 +11,15 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
+        with:
+          python-version: '3.12'
 
       - name: Run deptry
         shell: bash
         run: |
+          uv venv
           uv pip install --no-cache-dir -r requirements.txt
           uv pip install --no-cache-dir deptry
-
-      #- name: Install deptry
-      #  shell: bash
-      #  run: |
-      #    pip install --no-cache-dir deptry
 
       - name: Run deptry
         shell: bash
