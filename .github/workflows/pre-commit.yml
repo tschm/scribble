@@ -24,4 +24,4 @@ jobs:
       - name: Run deptry
         shell: bash
         run: |
-          deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
+          uv run deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
