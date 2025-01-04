@@ -25,7 +25,7 @@ def __segment(points, n=100):
     """
     Each letter is a represented by a bunch of points a,b,c,d...
     There are straight segments between two adjacent points
-    We represent each such segment as a collection of n auxilliary points
+    We represent each such segment as a collection of n auxiliary points
     """
     for a, b in zip(points[:-1], points[1:]):
         yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
