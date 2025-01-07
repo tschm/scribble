@@ -28,6 +28,8 @@ jobs:
 
       - name: Build container image
         run: |
+          ls -all
+          pwd
           podman build \
             --tag ghcr.io/${{ github.repository }}:${{ github.sha }} \
             --tag ghcr.io/${{ github.repository }}:latest \
