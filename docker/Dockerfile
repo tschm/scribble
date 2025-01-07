@@ -12,7 +12,9 @@ WORKDIR /app
 # Combine layers and use --link for improved caching
 RUN mkdir -p /app/pyscribble
 
-COPY ./requirements.txt /app/
+#COPY requirements.txt /app/
+COPY . .
+RUN ls -all
 
 # Combine RUN commands to reduce layers
 RUN uv pip install --no-cache-dir -r /app/requirements.txt && \
