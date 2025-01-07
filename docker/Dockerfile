@@ -10,13 +10,19 @@ ENV UV_SYSTEM_PYTHON=1
 WORKDIR /app
 
 # Combine layers and use --link for improved caching
-COPY --link pyscribble ./pyscribble/
-COPY --link requirements.txt app.py ./
+RUN mkdir -p /app/pyscribble
+
+#COPY requirements.txt /app/
+COPY . .
+RUN ls -all
 
 # Combine RUN commands to reduce layers
-RUN uv pip install --no-cache-dir -r requirements.txt && \
+RUN uv pip install --no-cache-dir -r /app/requirements.txt && \
     uv pip install --no-cache-dir marimo && \
     rm requirements.txt
+
+COPY pyscribble /app/pyscribble
+COPY app.py /app/
 
 # Create non-root user in a single RUN command
 RUN useradd -m app_user && \
