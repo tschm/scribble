@@ -30,7 +30,7 @@ jobs:
           uv pip install --no-cache-dir -r requirements.txt
           uv pip install --no-cache-dir pytest
 
-      - name: Run deptry
+      - name: Run tests
         shell: bash
         run: |
           uv run pytest tests
