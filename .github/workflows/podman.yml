@@ -2,9 +2,10 @@ name: Build Container Image
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
   # Allow manual trigger
   workflow_dispatch:
 

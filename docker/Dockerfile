@@ -10,8 +10,8 @@ ENV UV_SYSTEM_PYTHON=1
 WORKDIR /app
 
 # Combine layers and use --link for improved caching
-COPY --link pyscribble ./pyscribble/
-COPY --link requirements.txt app.py ./
+COPY pyscribble ./pyscribble/
+COPY requirements.txt app.py ./
 
 # Combine RUN commands to reduce layers
 RUN uv pip install --no-cache-dir -r requirements.txt && \
