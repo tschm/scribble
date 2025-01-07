@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.12
 FROM python:3.12-slim
 
 # Install uv for fast package management
