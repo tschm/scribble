@@ -15,7 +15,7 @@ RUN mkdir -p /app/pyscribble
 COPY requirements.txt /app/
 
 # Combine RUN commands to reduce layers
-RUN uv pip install --no-cache-dir -r requirements.txt && \
+RUN uv pip install --no-cache-dir -r /app/requirements.txt && \
     uv pip install --no-cache-dir marimo && \
     rm requirements.txt
 
