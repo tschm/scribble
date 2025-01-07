@@ -33,7 +33,7 @@ jobs:
           podman build \
             --tag ghcr.io/${{ github.repository }}:${{ github.sha }} \
             --tag ghcr.io/${{ github.repository }}:latest \
-            -f docker/Dockerfile
+            -f docker/Dockerfile \
             .
 
       #- name: Test container image
