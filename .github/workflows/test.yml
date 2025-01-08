@@ -4,15 +4,24 @@ on:
   push:
 
 jobs:
-  deptry:
-    runs-on: ubuntu-latest
+  test:
+
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          python-version: '3.13'
+          python-version: ${{ matrix.python-version }}
 
       - name: Run pytest
         shell: bash
@@ -21,7 +30,7 @@ jobs:
           uv pip install --no-cache-dir -r requirements.txt
           uv pip install --no-cache-dir pytest
 
-      - name: Run deptry
+      - name: Run tests
         shell: bash
         run: |
           uv run pytest tests

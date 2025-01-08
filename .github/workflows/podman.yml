@@ -36,10 +36,6 @@ jobs:
             -f docker/Dockerfile \
             .
 
-      #- name: Test container image
-      #  run: |
-      #    podman run --rm ghcr.io/${{ github.repository }}:${{ github.sha }} test
-
       - name: Push container image
         if: github.event_name != 'pull_request'
         run: |
