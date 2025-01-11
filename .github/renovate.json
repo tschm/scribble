@@ -8,6 +8,6 @@
   ],
   "pre-commit": {
     "enabled": true
-  }
+  },
   "automerge": true
 }
