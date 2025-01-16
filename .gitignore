@@ -9,3 +9,5 @@ __pycache__
 .config
 *.pdf
 *.png
+
+!Happy Birthday.png
