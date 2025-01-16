@@ -1,5 +1,7 @@
 # scribble
 
+![Happy Birthday](Happy%20Birthday.png)
+
 I am using this little tool to create wedding name
 plates for all guests of my (first) wedding.
 The underlying idea is described (and stolen from) here:
