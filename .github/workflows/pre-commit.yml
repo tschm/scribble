@@ -7,31 +7,20 @@ jobs:
   deptry:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          python-version: '3.12'
+      - name: "Build the virtual environment for ${{ github.repository }}"
+        uses: cvxgrp/.github/actions/environment/pip@main
 
       - name: Run deptry
         shell: bash
         run: |
-          uv venv
-          uv pip install --no-cache-dir -r requirements.txt
-          uv pip install --no-cache-dir deptry
+          python -m pip install --no-cache-dir deptry
 
       - name: Run deptry
         shell: bash
         run: |
-          uv run deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
+          deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
 
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout [${{ github.repository }}]
-        uses: actions/checkout@v4
-
-      - uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: '--verbose --all-files'
+      - uses: cvxgrp/.github/actions/pre-commit@v2.1.1

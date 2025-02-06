@@ -15,22 +15,12 @@ jobs:
         python-version: [ '3.10', '3.11', '3.12', '3.13' ]
 
     steps:
-      - name: Checkout [${{ github.repository }}]
-        uses: actions/checkout@v4
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - name: "Build the virtual environment for ${{ github.repository }}"
+        uses: cvxgrp/.github/actions/environment/pip@main
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Run pytest
-        shell: bash
-        run: |
-          uv venv
-          uv pip install --no-cache-dir -r requirements.txt
-          uv pip install --no-cache-dir pytest
-
-      - name: Run tests
-        shell: bash
-        run: |
-          uv run pytest tests
+      - uses: cvxgrp/.github/actions/test@v2.1.1
+        with:
+          tests-folder: tests
