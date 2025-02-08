@@ -13,8 +13,8 @@ jobs:
       - name: Run deptry
         shell: bash
         run: |
-          uv pip install --no-cache-dir deptry
-          uv run deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
+          python -m pip install --no-cache-dir deptry
+          python -m deptry -vv --per-rule-ignores "DEP002=kaleido" pyscribble
 
   pre-commit:
     runs-on: ubuntu-latest
