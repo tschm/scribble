@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build the virtual environment for ${{ github.repository }}"
-        uses: cvxgrp/.github/actions/environment@v2.2.5
+        uses: cvxgrp/.github/actions/environment@v2.2.6
 
       - name: Run deptry
         shell: bash
