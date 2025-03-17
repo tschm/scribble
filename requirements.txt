@@ -1,4 +1,5 @@
 numpy==2.2.4
 plotly==6.0.0
 numexpr==2.10.2
-kaleido
+kaleido==0.2.1
+marimo==0.11.20
