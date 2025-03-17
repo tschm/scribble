@@ -13,8 +13,7 @@ RUN useradd -m app_user && \
 
 # Copy and install dependencies first for better caching
 COPY --chown=app_user:app_user requirements.txt .
-RUN uv pip install --no-cache-dir -r requirements.txt && \
-    uv pip install --no-cache-dir marimo
+RUN uv pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY --chown=app_user:app_user . .
