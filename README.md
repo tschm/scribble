@@ -1,5 +1,7 @@
 # scribble
 
+[![CodeFactor](https://www.codefactor.io/repository/github/tschm/scribble/badge)](https://www.codefactor.io/repository/github/tschm/scribble)
+
 ![Happy Birthday](Happy%20Birthday.png)
 
 I am using this little tool to create wedding name
