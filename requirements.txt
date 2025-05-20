@@ -1,5 +1,5 @@
 numpy==2.2.6
-plotly==6.1.0
+plotly==6.1.1
 numexpr==2.10.2
 kaleido==0.2.1
 marimo==0.13.10
