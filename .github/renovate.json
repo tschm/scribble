@@ -10,7 +10,8 @@
   "enabledManagers": [
     "pip_requirements",
     "pre-commit",
-    "github-actions"
+    "github-actions",
+    "dockerfile"
   ],
   "timezone": "Asia/Dubai",
   "schedule": [
