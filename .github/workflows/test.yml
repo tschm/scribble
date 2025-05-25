@@ -1,25 +1,48 @@
-name: "CI"
+# Workflow for running tests across multiple operating systems and Python versions
+# This workflow ensures cross-platform compatibility and Python version support
 
+name: TEST
+
+# Trigger the workflow on push events
 on:
-  push
+  push:
 
 jobs:
+  # Main test job that runs the test suite
   test:
-    # The type of runner that the job will run on
+
+    # The type of runner that the job will run on (defined in matrix)
     runs-on: ${{ matrix.os }}
 
+    # Matrix strategy to test multiple configurations
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        # Test on Ubuntu, Windows, and macOS
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        # Test with Python 3.10, 3.11, 3.12, and 3.13
+        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: "Build the virtual environment for ${{ github.repository }}"
-        uses: tschm/cradle/actions/environment@v0.1.68
+      # Check out the repository code
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
+
+      # Set up uv (Python package manager) with the specified Python version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: tschm/cradle/actions/test@v0.1.68
-        with:
-          python-version: ${{ matrix.python-version }}
+      # Create virtual environment and install dependencies
+      - name: Run pytest
+        shell: bash
+        run: |
+          uv venv
+          uv pip install --no-cache-dir -r requirements.txt
+          uv pip install --no-cache-dir pytest
+
+      # Execute the test suite using pytest
+      - name: Run tests
+        shell: bash
+        run: |
+          uv run pytest tests
