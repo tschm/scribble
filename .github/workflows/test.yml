@@ -1,36 +1,25 @@
-name: TEST
+name: "CI"
 
 on:
-  push:
+  push
 
 jobs:
   test:
-
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout [${{ github.repository }}]
-        uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - name: "Build the virtual environment for ${{ github.repository }}"
+        uses: tschm/cradle/actions/environment@v0.1.68
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Run pytest
-        shell: bash
-        run: |
-          uv venv
-          uv pip install --no-cache-dir -r requirements.txt
-          uv pip install --no-cache-dir pytest
-
-      - name: Run tests
-        shell: bash
-        run: |
-          uv run pytest tests
+      - uses: tschm/cradle/actions/test@v0.1.68
+        with:
+          python-version: ${{ matrix.python-version }}
