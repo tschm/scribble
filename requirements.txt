@@ -1,5 +1,16 @@
+# Python package dependencies for the scribble project
+
+# Numerical computing library for array operations
 numpy==2.2.4
+
+# Interactive graphing library for creating interactive, publication-quality graphs
 plotly==6.0.0
+
+# Fast numerical expression evaluator for NumPy arrays
 numexpr==2.10.2
+
+# Static image export for web-based visualization libraries
 kaleido==0.2.1
+
+# Interactive notebook environment for data science
 marimo==0.11.20
