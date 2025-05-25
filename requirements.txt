@@ -1,7 +1,7 @@
 # Python package dependencies for the scribble project
 
 # Numerical computing library for array operations
-numpy==2.2.4
+numpy==2.2.6
 
 # Interactive graphing library for creating interactive, publication-quality graphs
 plotly==6.1.1
