@@ -1,0 +1,112 @@
+# Workflow for testing the Docker container
+# This workflow ensures the Docker container builds and runs correctly
+
+name: Docker Test
+
+# Trigger the workflow on push events and pull requests
+on:
+  push:
+    paths:
+      - 'docker/**'
+      - 'app.py'
+      - 'pyscribble/**'
+      - 'requirements.txt'
+      - '.github/workflows/docker-test.yml'
+  pull_request:
+    paths:
+      - 'docker/**'
+      - 'app.py'
+      - 'pyscribble/**'
+      - 'requirements.txt'
+      - '.github/workflows/docker-test.yml'
+
+jobs:
+  # Job to test the Docker container
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Build the Docker image
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          push: false
+          tags: scribble-app-test:latest
+          load: true
+
+      # Run the Docker container
+      - name: Run Docker container
+        run: |
+          docker run -d --name scribble-test -p 8080:8080 scribble-app-test:latest
+
+      # Wait for container to initialize
+      - name: Wait for container to initialize
+        run: sleep 10
+
+      # Test HTTP connection
+      - name: Test HTTP connection
+        run: |
+          if ! curl -s -f http://localhost:8080/ > /dev/null; then
+            echo "HTTP connection failed"
+            docker logs scribble-test
+            exit 1
+          fi
+          echo "HTTP connection successful"
+
+      # Check container health
+      - name: Check container health
+        run: |
+          # Get the health status and remove any newline characters
+          HEALTH_STATUS=$(docker inspect --format='{{.State.Health.Status}}' scribble-test 2>/dev/null | tr -d '\n' || echo "none")
+
+          # If health status is empty, set it to "none"
+          if [ -z "$HEALTH_STATUS" ]; then
+            HEALTH_STATUS="none"
+          fi
+
+          if [ "$HEALTH_STATUS" != "healthy" ] && [ "$HEALTH_STATUS" != "starting" ] && [ "$HEALTH_STATUS" != "none" ]; then
+            echo "Container health check failed: $HEALTH_STATUS"
+            docker logs scribble-test
+            exit 1
+          fi
+          echo "Container health check passed: $HEALTH_STATUS"
+          # If health status is "none", the container doesn't have a health check defined
+          if [ "$HEALTH_STATUS" = "none" ]; then
+            echo "No health check defined for this container"
+          fi
+
+      # Check container user
+      - name: Check container user
+        run: |
+          CONTAINER_USER=$(docker exec scribble-test whoami)
+          if [ "$CONTAINER_USER" != "app_user" ]; then
+            echo "Container is running as unexpected user: $CONTAINER_USER"
+            exit 1
+          fi
+          echo "Container is running as the expected user: $CONTAINER_USER"
+
+      # Check marimo installation
+      - name: Check marimo installation
+        run: |
+          if ! docker exec scribble-test which marimo > /dev/null; then
+            echo "Marimo is not installed correctly"
+            exit 1
+          fi
+          echo "Marimo is installed correctly"
+
+      # Clean up
+      - name: Clean up
+        if: always()
+        run: |
+          docker stop scribble-test || true
+          docker rm scribble-test || true

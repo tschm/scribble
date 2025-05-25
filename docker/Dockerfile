@@ -21,6 +21,10 @@ COPY --chown=app_user:app_user . .
 # Switch to non-root user
 USER app_user
 
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:7860/ || exit 1
+
 EXPOSE 8080
 
 CMD ["marimo", "run", "app.py", "--host", "0.0.0.0", "-p", "8080"]

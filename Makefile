@@ -49,3 +49,15 @@ marimo: install ## Install Marimo
 app: install ## Run the Marimo app
 	@uv pip install marimo
 	@uv run marimo run app.py
+
+# Build and run the Docker container for the application
+.PHONY: build
+build: ## Build and run Docker container
+	@docker build -f docker/Dockerfile -t scribble-app .
+	@docker run -it --rm -p 8080:8080 scribble-app
+
+# Test the Docker container
+.PHONY: test-docker
+test-docker: ## Test Docker container build and functionality
+	@chmod +x docker/test_docker.sh
+	@cd $(CURDIR) && ./docker/test_docker.sh
