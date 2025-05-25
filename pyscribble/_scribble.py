@@ -1,4 +1,5 @@
 from itertools import chain
+from typing import Generator, List
 
 import numexpr as ne
 import numpy as np
@@ -6,7 +7,7 @@ import numpy as np
 from ._letter import letter
 
 
-def series(string, n, str):
+def series(string: str, n: int, str: str) -> List[np.ndarray]:
     segments = []
     for i, _letter in enumerate(string):
         # move pts to the correction position in a word
@@ -21,7 +22,7 @@ def series(string, n, str):
     return list(chain.from_iterable(segments))
 
 
-def __segment(points, n=100):
+def __segment(points: np.ndarray, n: int = 100) -> Generator[np.ndarray, None, None]:
     """
     Each letter is a represented by a bunch of points a,b,c,d...
     There are straight segments between two adjacent points
