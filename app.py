@@ -1,3 +1,5 @@
+from typing import Any, Callable, List, Tuple
+
 import marimo
 
 __generated_with = "0.9.30"
@@ -5,7 +7,7 @@ app = marimo.App()
 
 
 @app.cell
-def __init():
+def __init() -> Tuple[Callable, Any]:
     import marimo as mo
 
     from pyscribble import create
@@ -14,7 +16,7 @@ def __init():
 
 
 @app.cell
-def __input_name(mo):
+def __input_name(mo: Any) -> Tuple[Any]:
     name = mo.ui.text(placeholder="Name...")
     mo.md(
         f"""
@@ -25,7 +27,7 @@ def __input_name(mo):
 
 
 @app.cell
-def __input_function(mo):
+def __input_function(mo: Any) -> Tuple[Any, List[str]]:
     options = ["tanh((-1+2j)*z)", "sinh(3*z)", "exp((-1+2j)*z)"]
     dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
     mo.md(
@@ -37,7 +39,7 @@ def __input_function(mo):
 
 
 @app.cell
-def __input_event(mo):
+def __input_event(mo: Any) -> Tuple[Any]:
     event = mo.ui.text(placeholder="Event...")
     mo.md(
         f"""
@@ -48,7 +50,7 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(create, dropdown, event, mo, name):
+def __output(create: Callable, dropdown: Any, event: Any, mo: Any, name: Any) -> None:
     from io import BytesIO
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)

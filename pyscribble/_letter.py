@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def letter(x):
+def letter(x: str) -> np.ndarray:
     # I have copied this data straight from
     # https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
     __letters = {

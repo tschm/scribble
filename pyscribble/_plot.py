@@ -1,3 +1,6 @@
+from typing import List
+
+import numpy as np
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
@@ -5,7 +8,7 @@ from ._scribble import series
 
 
 # Create the figure with subplots: 2 rows, 1 column
-def __create_fig():
+def __create_fig() -> go.Figure:
     fig = make_subplots(
         rows=2,
         cols=1,
@@ -16,7 +19,7 @@ def __create_fig():
     return fig
 
 
-def __create_annotation(fig, word):
+def __create_annotation(fig: go.Figure, word: str) -> None:
     # Add the upside-down word as an annotation in the top subplot
     fig.add_annotation(
         x=0.5,  # X position (center)
@@ -32,7 +35,7 @@ def __create_annotation(fig, word):
     )
 
 
-def __remove_axis(fig):
+def __remove_axis(fig: go.Figure) -> go.Figure:
     # Update layout settings
     fig.update_layout(
         plot_bgcolor="white",  # White background for clean look
@@ -79,7 +82,7 @@ def __remove_axis(fig):
     return fig
 
 
-def __plot_letters(fig, d):
+def __plot_letters(fig: go.Figure, d: List[np.ndarray]) -> None:
     # Create traces for each segment
     traces = []
 
@@ -99,7 +102,7 @@ def __plot_letters(fig, d):
         fig.add_trace(trace, row=2, col=1)
 
 
-def create(name, fct, event, n=100):
+def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
     # Create the figure with subplots: 2 rows, 1 column
     fig = __create_fig()
     __create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
