@@ -47,7 +47,7 @@ jobs:
       # Run the Docker container
       - name: Run Docker container
         run: |
-          docker run -d --name scribble-test -p 8080:8080 scribble-app-test:latest
+          docker run -d --name scribble-test -p 7862:7860 scribble-app-test:latest
 
       # Wait for container to initialize
       - name: Wait for container to initialize
@@ -56,7 +56,7 @@ jobs:
       # Test HTTP connection
       - name: Test HTTP connection
         run: |
-          if ! curl -s -f http://localhost:8080/ > /dev/null; then
+          if ! curl -s -f http://localhost:7862/ > /dev/null; then
             echo "HTTP connection failed"
             docker logs scribble-test
             exit 1
