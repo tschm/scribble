@@ -24,7 +24,7 @@ def series(string: str, n: int, str: str) -> List[np.ndarray]:
 
 def __segment(points: np.ndarray, n: int = 100) -> Generator[np.ndarray, None, None]:
     """
-    Each letter is a represented by a bunch of points a,b,c,d...
+    Each letter is represented by a bunch of points a,b,c,d...
     There are straight segments between two adjacent points
     We represent each such segment as a collection of n auxiliary points
     """
