@@ -37,7 +37,7 @@ jobs:
       # Build with Makefile
       - name: Test with Makefile
         run: |
-          make -f docker/Makefile test_docker
+          make -f docker/Makefile test-docker
 
       # Build the Docker image
       - name: Build Docker image
