@@ -33,4 +33,6 @@ jobs:
       # Test with script
       - name: Test with Makefile
         run: |
-          ./docker/test_docker.sh
+          # you have to be in the correct folder
+          cd docker
+          ./test_docker.sh
