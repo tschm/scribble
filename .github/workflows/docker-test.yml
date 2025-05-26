@@ -37,7 +37,10 @@ jobs:
       # Build with Makefile
       - name: Test with Makefile
         run: |
-          make -f docker/Makefile test-docker
+          cd docker
+          #chmod +x test_docker.sh
+          ./test_docker.sh
+          #make -f docker/Makefile test-docker
 
       # Build the Docker image
       - name: Build Docker image
