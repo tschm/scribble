@@ -13,11 +13,11 @@ echo "🔍 Testing Dockerfile in scribble..."
 
 # Step 1: Build the Docker image
 echo "🏗️  Building Docker image..."
-docker build -f docker/Dockerfile -t scribble-app-test .
+docker build -f Dockerfile -t scribble-app-test ..
 
 # Step 2: Run the container in detached mode
 echo "🚀 Starting container..."
-docker run -d --name $TEST_CONTAINER_NAME -p 8080:8080 scribble-app-test
+docker run -d --name $TEST_CONTAINER_NAME -p 7862:7860 scribble-app-test
 
 # Step 3: Wait for the container to start (give it some time to initialize)
 echo "⏳ Waiting for container to initialize..."
@@ -25,7 +25,7 @@ sleep 5
 
 # Step 4: Test that the application is accessible
 echo "🌐 Testing HTTP connection..."
-if curl -s -f http://localhost:8080/ > /dev/null; then
+if curl -s -f http://localhost:7862/ > /dev/null; then
     echo -e "${GREEN}✅ HTTP connection successful${NC}"
 else
     echo -e "${RED}❌ HTTP connection failed${NC}"
