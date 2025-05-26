@@ -62,7 +62,7 @@ fi
 # Step 6: Verify the container is running with the correct user
 echo "👤 Checking container user..."
 CONTAINER_USER=$(docker exec $TEST_CONTAINER_NAME whoami)
-if [ "$CONTAINER_USER" = "app_user" ]; then
+if [ "$CONTAINER_USER" = "user" ]; then
     echo -e "${GREEN}✅ Container is running as the expected user: $CONTAINER_USER${NC}"
 else
     echo -e "${RED}❌ Container is running as unexpected user: $CONTAINER_USER${NC}"
