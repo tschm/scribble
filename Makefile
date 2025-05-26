@@ -7,17 +7,22 @@
 # Use system Python with uv
 UV_SYSTEM_PYTHON := 1
 
-# Mark install target as phony (not producing a file named 'install')
-.PHONY: install
-install:  ## Install a virtual environment
+# Create a virtual environment using uv
+venv:
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
 	@uv venv
-	@uv pip install -r requirements.txt
+
+
+# Mark install target as phony (not producing a file named 'install')
+.PHONY: install
+install: venv ## Install a virtual environment
+	@uv pip install --upgrade pip
+	@uv pip install --no-cache-dir -r requirements.txt
 
 # Format and lint the code using pre-commit
 .PHONY: fmt
 fmt:  install ## Run autoformatting and linting
-	@uv pip install pre-commit
+	@uv pip install --no-cache-dir pre-commit
 	@uv run pre-commit install
 	@uv run pre-commit run --all-files
 
@@ -29,8 +34,8 @@ clean:  ## Clean up caches and build artifacts
 # Run the test suite using pytest
 .PHONY: test
 test: install ## Run tests
-	@uv pip install pytest
-	@uv run pytest
+	@uv pip install --no-cache-dir pytest
+	@uv run pytest tests
 
 # Display help information about available make targets
 .PHONY: help
@@ -41,11 +46,17 @@ help:  ## Display this help screen
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
 marimo: install ## Install Marimo
-	@uv pip install marimo
+	@uv pip install --no-cache-dir marimo
 	@uv run marimo edit app.py
 
 # Run the Marimo application
 .PHONY: app
 app: install ## Run the Marimo app
-	@uv pip install marimo
+	@uv pip install --no-cache-dir marimo
 	@uv run marimo run app.py
+
+# Build and run the Docker container for the application
+.PHONY: build
+build: ## Build and run Docker container
+	@docker build -f docker/Dockerfile -t scribble-app .
+	@docker run -it --rm -p 8080:8080 scribble-app
