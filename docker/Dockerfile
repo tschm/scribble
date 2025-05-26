@@ -19,9 +19,6 @@ ENV PATH="/home/user/.local/bin:$PATH" \
 # - PYTHONDONTWRITEBYTECODE=1: Prevents Python from writing .pyc files (reduces image size)
 # - PIP_NO_CACHE_DIR=1: Prevents pip from using a cache directory (reduces image size)
 
-
-WORKDIR /app
-
 # Create non-root user and chown the app directory
 # Running as a non-root user is a security best practice for containers
 # - useradd -m: Creates a user with a home directory
@@ -29,6 +26,8 @@ WORKDIR /app
 # - mkdir /app: Creates the application directory
 # - chown user:user /app: Gives the new user ownership of the app directory
 RUN useradd -m -u 1000 user && mkdir /app && chown user:user /app
+
+WORKDIR /app
 
 # Copy and install dependencies first for better caching
 COPY --chown=user:user requirements.txt .
