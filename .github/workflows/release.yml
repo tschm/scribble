@@ -19,10 +19,9 @@ jobs:
       # Generate a new version tag based on semantic versioning
       - name: Generate Tag
         id: tag_version
-        uses: cvxgrp/.github/actions/tag@v2.2.7
+        uses: tschm/cradle/actions/tag@v0.1.68
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_package: 'false'
 
       # Output the generated tag for debugging purposes
       - name: Debug Output Tag
@@ -46,9 +45,12 @@ jobs:
 
       # Build and push the Docker image with the new tag
       - name: Build and Push Docker Image
-        uses: cvxgrp/.github/actions/docker@v2.2.7
+        uses: tschm/cradle/actions/docker@v0.1.68
+        #uses: cvxgrp/.github/actions/docker@v2.2.7
         with:
-          repository: ${{ github.repository }}
+          #repository: ${{ github.repository }}
           tag: ${{ needs.tag.outputs.tag }}
-          dockerfile-path: 'docker/Dockerfile'
+          dockerfiles: 'docker/Dockerfile'
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_actor: ${{ github.actor }}
+          github_repository: ${{ github.repository }}
