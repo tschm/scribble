@@ -9,12 +9,12 @@ on:
 
 jobs:
   # Job to generate a new version tag
-  tag:
+  tagging:
     permissions:
       contents: write  # Permission to write to repository contents (create tags)
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.tag_version.outputs.tag }}  # This will output the tag for other jobs
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}  # This will output the tag for other jobs
     steps:
       # Generate a new version tag based on semantic versioning
       - name: Generate Tag
@@ -23,14 +23,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Output the generated tag for debugging purposes
-      - name: Debug Output Tag
-        run: |
-            echo "Tag: ${{ steps.tag_version.outputs.tag }}"
 
   # Job to build and push a Docker image with the new version tag
   docker:
-    needs: tag  # This job depends on the tag job
+    needs: tagging  # This job depends on the tag job
     permissions:
       contents: read  # Permission to read repository contents
       packages: write  # Permission to write to GitHub Packages
@@ -48,8 +44,7 @@ jobs:
         uses: tschm/cradle/actions/docker@v0.1.68
         #uses: cvxgrp/.github/actions/docker@v2.2.7
         with:
-          #repository: ${{ github.repository }}
-          tag: ${{ needs.tag.outputs.tag }}
+          tag: ${{ needs.tagging.outputs.new_tag }}
           dockerfiles: 'docker/Dockerfile'
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_actor: ${{ github.actor }}
