@@ -84,7 +84,8 @@ FROM base AS test
 # Copy tests
 COPY --chown=user:user tests /app/tests
 
-RUN uv pip install --no-cache-dir -r /app/tests/requirements.txt
+RUN uv pip install --no-cache-dir -r /app/tests/requirements.txt && \
+    ls -all \
 
 USER user
 
