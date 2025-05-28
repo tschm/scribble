@@ -1,0 +1,4 @@
+# Python package dependencies for the scribble project
+
+pytest==8.3.5
+req
