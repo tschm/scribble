@@ -35,7 +35,7 @@ RUN uv pip install --no-cache-dir -r requirements.txt
 
 # Copy the pyscribble package to the container
 # This contains the core functionality for the pyscribble application
-COPY --chown=user:user ./pyscribble .
+COPY --chown=user:user ./pyscribble .pyscribble/
 
 # Copy application code
 # The main app.py file contains the Marimo application entry point
