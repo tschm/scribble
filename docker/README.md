@@ -22,8 +22,7 @@ The Docker setup in this project allows you to:
   - Sets up a non-root user (`app_user`) for security
   - Configures the application to run with Marimo
 
-- `Dockerfile.dockerignore`: Optimizes the build context
-by excluding unnecessary files
+- `.dockerignore`: Optimizes the build context by excluding unnecessary files
   - Uses a "deny by default, allow explicitly" approach
   - Only includes essential files for the build
   - Excludes Python cache files to reduce image size
