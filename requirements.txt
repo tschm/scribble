@@ -4,7 +4,7 @@
 numpy==2.2.6
 
 # Interactive graphing library for creating interactive, publication-quality graphs
-plotly==6.1.1
+plotly==6.1.2
 
 # Fast numerical expression evaluator for NumPy arrays
 numexpr==2.10.2
