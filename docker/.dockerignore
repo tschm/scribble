@@ -6,6 +6,7 @@
 !pyscribble
 !requirements.txt
 !app.py
+!tests
 
 **/__pycache__
 **/*.pyc
