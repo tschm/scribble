@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.16
-FROM python:3.13-slim
+FROM python:3.13-slim AS base
 
 # Install uv for fast package management
 COPY --from=ghcr.io/astral-sh/uv:0.7.8 /uv /bin/uv
@@ -43,7 +43,7 @@ COPY --chown=user:user app.py .
 
 # Switch to non-root user
 # This is a security best practice to limit the potential damage if the container is compromised
-USER user
+#USER user
 
 # Add healthcheck
 # This allows Docker to monitor the health of the container
@@ -52,8 +52,17 @@ USER user
 # - timeout=30s: Allow 30 seconds for the check to complete
 # - start-period=5s: Give 5 seconds grace period on startup
 # - retries=3: Fail after 3 consecutive failed checks
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:7860/ || exit 1
+#HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+#    CMD curl -f http://localhost:7860/ || exit 1
+
+# Expose port
+# This documents that the container listens on port 7860
+# Note: This doesn't actually publish the port - that's done at runtime with -p flag
+# EXPOSE 7860
+
+FROM base AS prod
+
+USER user
 
 # Expose port
 # This documents that the container listens on port 7860
@@ -69,3 +78,14 @@ ENTRYPOINT ["marimo"]
 # - --host 0.0.0.0: Binds to all network interfaces (required for container access)
 # - --port 7860: The port the application listens on
 CMD ["run", "app.py", "--host", "0.0.0.0", "--port", "7860"]
+
+FROM base as test
+
+# Copy tests
+COPY --chown=user:user tests .
+
+RUN uv pip install --no-cache-dir -r tests/requirements.txt
+
+USER user
+
+ENTRYPOINT ["pytest"]
