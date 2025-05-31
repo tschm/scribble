@@ -13,4 +13,4 @@ numexpr==2.10.2
 kaleido==0.2.1
 
 # Interactive notebook environment for data science
-marimo==0.13.14
+marimo==0.13.15
