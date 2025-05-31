@@ -1,6 +1,3 @@
-# Workflow for creating a new version release and building a Docker image
-# This workflow is manually triggered to create a new version tag and build a Docker image
-
 name: Bump version
 
 # Trigger the workflow manually using the GitHub Actions UI
@@ -22,58 +19,3 @@ jobs:
         uses: tschm/cradle/actions/tag@v0.1.69
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
-  # Job to build and push a Docker image with the new version tag
-  docker:
-    needs: tagging  # This job depends on the tag job
-    permissions:
-      contents: read  # Permission to read repository contents
-      packages: write  # Permission to write to GitHub Packages
-
-    runs-on: ubuntu-latest
-    steps:
-      # -----------------------------------------------------------------------------
-      # Step 1: Checkout the repository
-      # -----------------------------------------------------------------------------
-      - name: Checkout [${{ github.repository }}]
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: redhat-actions/podman-login@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: 'ghcr.io'
-
-      - name: Build image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: tschm/scribble
-          tags: ${{ needs.tagging.outputs.new_tag }}
-          containerfiles: |
-            docker/Dockerfile
-          extra-args: |
-            --target prod
-
-
-      - name: Push to ghcr.io
-        id: push-to-ghcr
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ needs.tagging.outputs.new_tag }}
-          registry: 'ghcr.io'
-
-
-      ## Build and push the Docker image with the new tag
-      #- name: Build and Push Docker Image
-      #  uses: tschm/cradle/actions/docker@v0.1.68
-      #  #uses: cvxgrp/.github/actions/docker@v2.2.7
-      #  with:
-      #    tag: ${{ needs.tagging.outputs.new_tag }}
-      #    dockerfiles: 'docker/Dockerfile'
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #    github_actor: ${{ github.actor }}
-      #    github_repository: ${{ github.repository }}

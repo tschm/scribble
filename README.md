@@ -4,7 +4,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/tschm/scribble/badge)](https://www.codefactor.io/repository/github/tschm/scribble)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://github.com/renovatebot/renovate)
 [![TEST](https://github.com/tschm/scribble/actions/workflows/test.yml/badge.svg)](https://github.com/tschm/scribble/actions/workflows/test.yml)
-[![Docker Test](https://github.com/tschm/scribble/actions/workflows/docker-test.yml/badge.svg)](https://github.com/tschm/scribble/actions/workflows/docker-test.yml)
 
 ![Happy Birthday](Happy%20Birthday.png)
 
@@ -28,7 +27,6 @@ personalized gifts.
 - 📝 Customize with different names and event descriptions
 - 📥 Download generated designs as PNG images
 - 🖥️ Interactive web interface built with Marimo
-- 🐋 Docker support for easy deployment
 
 ## 🔍 How It Works
 
@@ -58,8 +56,6 @@ making it accessible without requiring MATLAB.
 - Dependencies listed in `requirements.txt`:
   - numpy: For numerical operations
   - plotly: For creating interactive visualizations
-  - numexpr: For evaluating mathematical expressions
-  - kaleido: For static image export
   - marimo: For the interactive web interface
 
 ### 🔧 Installation
@@ -99,25 +95,6 @@ The project includes basic tests to ensure functionality:
 # Run tests
 make test
 ```
-
-## 🐳 Docker Support
-
-For easy deployment, you can use Docker:
-
-```bash
-# Build and run the Docker container
-make build
-
-# Test the Docker container
-make test-docker
-```
-
-This will build a Docker image and run it, making the application
-available at ``http://localhost:8080``.
-
-The Docker container is automatically tested on each push and pull request
-using GitHub Actions. The tests verify that the container builds correctly,
-starts up, and functions as expected.
 
 ## 🤝 Contributing
 
