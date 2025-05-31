@@ -2,7 +2,7 @@
 FROM python:3.13-slim AS base
 
 # Install uv for fast package management
-COPY --from=ghcr.io/astral-sh/uv:0.7.8 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.7.9 /uv /bin/uv
 
 # Set environment variables in one layer
 # Combining multiple ENV commands into one reduces the number of layers in the final image
