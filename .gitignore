@@ -11,3 +11,9 @@ __pycache__
 *.png
 
 !Happy Birthday.png
+__marimo__
+
+# Coverage reports
+.coverage
+htmlcov/
+coverage.xml

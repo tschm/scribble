@@ -38,11 +38,18 @@ jobs:
         shell: bash
         run: |
           uv venv
+          uv pip install --no-cache-dir pytest pytest-cov
           uv pip install --no-cache-dir -r requirements.txt
-          uv pip install --no-cache-dir pytest
 
-      # Execute the test suite using pytest
+      # Execute the test suite using pytest with coverage
       - name: Run tests
         shell: bash
         run: |
-          uv run pytest tests
+          uv run python -m pytest -vv --cov=. --cov-report=term --cov-report=xml tests
+
+      # Upload coverage report to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false

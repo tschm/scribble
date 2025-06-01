@@ -89,12 +89,18 @@ make marimo
 
 ## 🧪 Testing
 
-The project includes basic tests to ensure functionality:
+The project includes tests to ensure functionality and measure code coverage:
 
 ```bash
-# Run tests
+# Run tests with coverage measurement
 make test
 ```
+
+This will run the tests and generate a coverage report in both terminal
+output and HTML format. The HTML report will be available in the `htmlcov`
+directory, which you can open in a web browser to see detailed coverage information.
+
+[![codecov](https://codecov.io/gh/tschm/scribble/branch/main/graph/badge.svg)](https://codecov.io/gh/tschm/scribble)
 
 ## 🤝 Contributing
 
