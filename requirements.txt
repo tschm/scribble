@@ -11,3 +11,6 @@ numexpr==2.10.2
 
 # Interactive notebook environment for data science
 marimo==0.13.15
+
+# pytest
+pytest==8.1.1
