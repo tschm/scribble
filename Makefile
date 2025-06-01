@@ -35,7 +35,7 @@ clean:  ## Clean up caches and build artifacts
 .PHONY: test
 test: ## Run tests
 	@uv run pip install --no-cache-dir pytest
-	@uv run pytest -vv app.py
+	@uv run pytest -vv tests
 
 # Display help information about available make targets
 .PHONY: help
