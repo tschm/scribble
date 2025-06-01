@@ -33,9 +33,9 @@ clean:  ## Clean up caches and build artifacts
 
 # Run the test suite using pytest
 .PHONY: test
-test: install ## Run tests
-	@uv pip install --no-cache-dir pytest
-	@uv run pytest tests
+test: ## Run tests
+	@uv run pip install --no-cache-dir pytest
+	@uv run pytest -vv app.py
 
 # Display help information about available make targets
 .PHONY: help
@@ -54,9 +54,3 @@ marimo: install ## Install Marimo
 app: install ## Run the Marimo app
 	@uv pip install --no-cache-dir marimo
 	@uv run marimo run app.py
-
-# Build and run the Docker container for the application
-.PHONY: build
-build: ## Build and run Docker container
-	@docker build -f docker/Dockerfile -t scribble-app .
-	@docker run -it --rm -p 8080:8080 scribble-app
