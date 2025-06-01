@@ -17,6 +17,11 @@ def letter_function():
     This fixture provides the _letter function from app.py.
     """
     from app import _letter
+
+    _, definitions = _letter.run()
+
+    print(definitions)
+
     return _letter
 
 
