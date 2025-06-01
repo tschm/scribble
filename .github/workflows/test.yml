@@ -39,7 +39,6 @@ jobs:
         run: |
           uv venv
           uv pip install --no-cache-dir -r requirements.txt
-          uv pip install --no-cache-dir pytest
 
       # Execute the test suite using pytest
       - name: Run tests
