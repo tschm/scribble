@@ -6,8 +6,5 @@ numpy==2.2.6
 # Interactive graphing library for creating interactive, publication-quality graphs
 plotly==6.1.2
 
-# Fast numerical expression evaluator for NumPy arrays
-numexpr==2.10.2
-
 # Interactive notebook environment for data science
 marimo==0.13.15

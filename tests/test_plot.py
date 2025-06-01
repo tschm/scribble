@@ -38,7 +38,7 @@ class TestPlot:
         assert isinstance(fig1, go.Figure)
 
         # Test with different function
-        fig2 = create("Thomas", "z*z", "wedding", n=100)
+        fig2 = create("Thomas", "exp((-1+2j)*z)", "wedding", n=100)
         assert isinstance(fig2, go.Figure)
 
         # Test with different event
@@ -80,4 +80,4 @@ class TestPlot:
         assert plot_function._name == "_plot"
 
         # Check that the plot_function has the expected signature
-        assert plot_function._expected_signature == ('go', 'np', 'series')
+        assert plot_function._expected_signature == ('go', 'np', 'series', 'function_map')

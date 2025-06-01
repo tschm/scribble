@@ -69,7 +69,8 @@ class TestOutput:
         name = mock_dependencies["name"]
 
         # Call the output function
-        output_function(create, create_download_link, dropdown, event, mo, name)
+        output_function(create, create_download_link, dropdown=dropdown, event=event, mo=mo, name=name)
+
 
         # Check that create was called with the correct parameters
         create.assert_called_once_with(
@@ -88,6 +89,7 @@ class TestOutput:
         event = mock_dependencies["event"]
         mo = mock_dependencies["mo"]
         name = mock_dependencies["name"]
+
         fig = mock_dependencies["fig"]
 
         # Patch the StringIO class
@@ -97,7 +99,7 @@ class TestOutput:
             mock_stringio.return_value = mock_buf
 
             # Call the output function
-            output_function(create, create_download_link, dropdown, event, mo, name)
+            output_function(create, create_download_link, dropdown=dropdown, event=event, mo=mo, name=name)
 
             # Check that write_html was called on the figure
             fig.write_html.assert_called_once_with(mock_buf, include_plotlyjs="cdn")
@@ -123,7 +125,7 @@ class TestOutput:
             mock_stringio.return_value = mock_buf
 
             # Call the output function
-            output_function(create, create_download_link, dropdown, event, mo, name)
+            output_function(create, create_download_link, dropdown, event, mo=mo, name=name)
 
             # Check that create_download_link was called with the correct parameters
             create_download_link.assert_called_once_with(
@@ -140,9 +142,9 @@ class TestOutput:
         event = mock_dependencies["event"]
         mo = mock_dependencies["mo"]
         name = mock_dependencies["name"]
-
         # Call the output function
-        output_function(create, create_download_link, dropdown, event, mo, name)
+        output_function(create, create_download_link, dropdown, event=event, mo=mo, name=name)
+
 
         # Check that mo.vstack was called with a list containing mo.ui.plotly and create_download_link
         mo.vstack.assert_called_once()
@@ -165,5 +167,5 @@ class TestOutput:
         mo.vstack.return_value = None
 
         # Call the output function and check the return value
-        result = output_function(create, create_download_link, dropdown, event, mo, name)
+        result = output_function(create, create_download_link, dropdown, event, mo=mo, name=name)
         assert result is None
