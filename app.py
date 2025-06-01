@@ -13,6 +13,33 @@ def imports():
     import plotly.graph_objs as go
     return go, mo, np
 
+
+@app.cell
+def __function_map(np):
+
+    # Define the complex functions
+    def tanh_func(z):
+        """Hyperbolic tangent function: tanh((-1+2j)*z)"""
+        return np.tanh((-1+2j)*z)
+
+    def sinh_func(z):
+        """Hyperbolic sine function: sinh(3*z)"""
+        return np.sinh(3*z)
+
+    def exp_func(z):
+        """Exponential function: exp((-1+2j)*z)"""
+        return np.exp((-1+2j)*z)
+
+    # Map function names to actual functions
+    function_map = {
+        "tanh((-1+2j)*z)": tanh_func,
+        "sinh(3*z)": sinh_func,
+        "exp((-1+2j)*z)": exp_func
+    }
+
+    return (function_map,)
+
+
 @app.cell(hide_code=True)
 def _download(mo):
     import base64
@@ -81,9 +108,7 @@ def _series(letter, np):
     from itertools import chain
     from typing import Generator
 
-    import numexpr as ne
-
-    def series(string: str, n: int, str: str) -> list[np.ndarray]:
+    def series(string: str, n: int, fct) -> list[np.ndarray]:
         segments = []
         for i, _letter in enumerate(string):
             # move pts to the correction position in a word
@@ -92,7 +117,7 @@ def _series(letter, np):
             # move pts to unit square
             pts = 2 * pts / len(string) - 1
 
-            segments.append(ne.evaluate(str, local_dict={"z": list(__segment(pts, n=n))}))
+            segments.append([fct(z) for z in list(__segment(pts, n=n))])
 
         # segments is a list of list, flatten it
         return list(chain.from_iterable(segments))
@@ -111,7 +136,7 @@ def _series(letter, np):
 
 
 @app.cell(hide_code=True)
-def _plot(go, np, series):
+def _plot(go, np, series, function_map):
     from plotly.subplots import make_subplots
 
     # Create the figure with subplots: 2 rows, 1 column
@@ -210,10 +235,7 @@ def _plot(go, np, series):
         fig = _create_fig()
         _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-        segments = list(series(name, n=n, str=fct))
-
-        # d is now a list of list. Flatten it
-        # d = list(chain.from_iterable(d))
+        segments = list(series(name, n=n, fct=function_map[fct]))
 
         _plot_letters(fig, segments)
         _remove_axis(fig)
@@ -234,14 +256,20 @@ def __input_name(mo):
 
 
 @app.cell
-def __input_function(mo):
-    options = ["tanh((-1+2j)*z)", "sinh(3*z)", "exp((-1+2j)*z)"]
+def __input_function(function_map, mo):
+
+    # Create dropdown with function names
+    options = list(function_map.keys())
     dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
+
+    # Display the dropdown
     mo.md(
         f"""
         Enter the complex function: {dropdown}
         """
     )
+
+    # Return both the dropdown and the function map
     return (dropdown,)
 
 
@@ -257,7 +285,14 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(create, create_download_link, dropdown, event, mo, name):
+def __output(
+    create,
+    create_download_link,
+    dropdown,
+    event,
+    mo,
+    name,
+):
     from io import StringIO
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
