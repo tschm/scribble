@@ -31,11 +31,11 @@ fmt:  install ## Run autoformatting and linting
 clean:  ## Clean up caches and build artifacts
 	@git clean -X -d -f
 
-# Run the test suite using pytest
+# Run the test suite using pytest with coverage
 .PHONY: test
-test: ## Run tests
-	@uv run pip install --no-cache-dir pytest
-	@uv run pytest -vv tests
+test: ## Run tests with coverage
+	@uv run pip install --no-cache-dir pytest pytest-cov
+	@uv run python -m pytest -vv --cov=. --cov-report=term --cov-report=html tests
 
 # Display help information about available make targets
 .PHONY: help

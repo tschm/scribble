@@ -11,6 +11,15 @@ def letter():
     return definitions["letter"]
 
 
+@pytest.fixture()
+def letter_function():
+    """
+    This fixture provides the _letter function from app.py.
+    """
+    from app import _letter
+    return _letter
+
+
 
 class TestLetter:
     """Tests for the letter function in the _letter cell."""
@@ -59,3 +68,14 @@ class TestLetter:
         result = letter("A")
         # Check that at least one point has a non-zero imaginary part
         assert any(point.imag != 0 for point in result if point != 0)
+
+    def test_letter_function_return(self, letter_function):
+        """Test that the _letter function is a marimo cell with the expected properties."""
+        # Check that the letter_function is a marimo cell
+        assert str(type(letter_function).__name__) == "Cell"
+
+        # Check that the letter_function has the expected name
+        assert letter_function._name == "_letter"
+
+        # Check that the letter_function has the expected signature
+        assert letter_function._expected_signature == ('np',)

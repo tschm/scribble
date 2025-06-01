@@ -150,3 +150,20 @@ class TestOutput:
         assert len(args) == 2
         assert args[0] == mo.ui.plotly.return_value
         assert args[1] == create_download_link.return_value
+
+    def test_output_function_return(self, output_function, mock_dependencies):
+        """Test that the __output function returns None."""
+        # Extract the dependencies
+        create = mock_dependencies["create"]
+        create_download_link = mock_dependencies["create_download_link"]
+        dropdown = mock_dependencies["dropdown"]
+        event = mock_dependencies["event"]
+        mo = mock_dependencies["mo"]
+        name = mock_dependencies["name"]
+
+        # Set the return value of mo.vstack to None
+        mo.vstack.return_value = None
+
+        # Call the output function and check the return value
+        result = output_function(create, create_download_link, dropdown, event, mo, name)
+        assert result is None

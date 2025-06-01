@@ -14,6 +14,15 @@ def create():
     return definitions["create"]
 
 
+@pytest.fixture()
+def plot_function():
+    """
+    This fixture provides the _plot function from app.py.
+    """
+    from app import _plot
+    return _plot
+
+
 class TestPlot:
     """Tests for the create function in the _plot cell."""
 
@@ -61,3 +70,14 @@ class TestPlot:
 
         # The figure should not have a legend
         assert fig.layout.showlegend is False
+
+    def test_plot_function_return(self, plot_function):
+        """Test that the _plot function is a marimo cell with the expected properties."""
+        # Check that the plot_function is a marimo cell
+        assert str(type(plot_function).__name__) == "Cell"
+
+        # Check that the plot_function has the expected name
+        assert plot_function._name == "_plot"
+
+        # Check that the plot_function has the expected signature
+        assert plot_function._expected_signature == ('go', 'np', 'series')

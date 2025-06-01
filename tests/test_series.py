@@ -11,6 +11,15 @@ def series():
     return definitions["series"]
 
 
+@pytest.fixture()
+def series_function():
+    """
+    This fixture provides the _series function from app.py.
+    """
+    from app import _series
+    return _series
+
+
 class TestSeries:
     """Tests for the series function in the _series cell."""
 
@@ -54,3 +63,14 @@ class TestSeries:
         result = series("", n=10, str="z")
         assert isinstance(result, list)
         assert len(result) == 0
+
+    def test_series_function_return(self, series_function):
+        """Test that the _series function is a marimo cell with the expected properties."""
+        # Check that the series_function is a marimo cell
+        assert str(type(series_function).__name__) == "Cell"
+
+        # Check that the series_function has the expected name
+        assert series_function._name == "_series"
+
+        # Check that the series_function has the expected signature
+        assert series_function._expected_signature == ('letter', 'np')
