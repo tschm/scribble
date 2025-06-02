@@ -32,7 +32,8 @@ jobs:
         run: |
           uv run pip install --no-cache-dir marimo
           mkdir -p artifacts/marimo
-          uv run marimo export html app.py -o artifacts/marimo/index.html
+          #uv run marimo export html app.py -o artifacts/marimo/index.html
+          uv run marimo export html-wasm app.py -o artifacts/marimo --mode run
 
       - name: GitHub Pages action
         uses: JamesIves/github-pages-deploy-action@v4
