@@ -1,33 +1,47 @@
+# Workflow for creating a new version release and deploying to GitHub Pages
+# This workflow is manually triggered to:
+# 1. Create a new version tag using semantic versioning
+# 2. Convert the Marimo notebook to HTML-WASM format
+# 3. Deploy the HTML to GitHub Pages
+
 name: Bump version
 
 # Trigger the workflow manually using the GitHub Actions UI
+# This allows controlled releases when needed rather than on every push
 on:
   workflow_dispatch
 
 jobs:
-  # Job to generate a new version tag
+  # Job to generate a new version tag based on semantic versioning
+  # This creates a new git tag with an incremented version number
   tagging:
     permissions:
-      contents: write  # Permission to write to repository contents (create tags)
+      contents: write  # Permission to write to repository contents (needed to create tags)
     runs-on: ubuntu-latest
     outputs:
-      new_tag: ${{ steps.tag_version.outputs.new_tag }}  # This will output the tag for other jobs
+      # This output variable makes the tag available to other jobs in the workflow
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
-      # Generate a new version tag based on semantic versioning
+      # Use the cradle/actions/tag action to generate a semantic version tag
+      # This automatically determines the next version number based on commit messages
       - name: Generate Tag
         id: tag_version
         uses: tschm/cradle/actions/tag@v0.1.69
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  book:
-    permissions:
-      contents: write  # Permission to write to repository contents (create tags)
+  # Job to build the HTML-WASM version of the Marimo notebook
+  # This job sets up the environment and converts the notebook to a deployable format
+  build:
     runs-on: ubuntu-latest
     steps:
+      # Set up the Python virtual environment with all required dependencies
+      # This uses a reusable action from the cradle repository
       - name: "Build the virtual environment for ${{ github.repository }}"
         uses: tschm/cradle/actions/environment@v0.1.69
 
+      # Convert the Marimo notebook to HTML-WASM format
+      # The WASM format allows for interactive elements to work in the browser
       - name: Convert notebook to HTML
         run: |
           uv run pip install --no-cache-dir marimo
@@ -35,8 +49,32 @@ jobs:
           #uv run marimo export html app.py -o artifacts/marimo/index.html
           uv run marimo export html-wasm app.py -o artifacts/marimo --mode run
 
-      - name: GitHub Pages action
-        uses: JamesIves/github-pages-deploy-action@v4
+      # Upload the generated files as a GitHub Actions artifact
+      # This makes the files available for the deployment job
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages            # The branch the action should deploy to.
-          folder: artifacts/marimo    # The folder the action should deploy.
+          path: artifacts/marimo
+
+  # Job to deploy the built HTML-WASM files to GitHub Pages
+  # This job takes the artifact from the build job and deploys it to GitHub Pages
+  deploy-book:
+    runs-on: ubuntu-latest
+    # This job depends on the build job completing successfully
+    needs: build
+    # Need specific permissions for GitHub Pages deployment
+    permissions:
+      pages: write      # Permission to deploy to Pages
+      id-token: write   # Permission to verify deployment origin
+
+    # Configure the deployment environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}  # URL will be available after deployment
+
+    steps:
+      # Deploy the artifact to GitHub Pages using GitHub's official action
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
