@@ -26,7 +26,7 @@ jobs:
       # This automatically determines the next version number based on commit messages
       - name: Generate Tag
         id: tag_version
-        uses: tschm/cradle/actions/tag@v0.1.69
+        uses: tschm/cradle/actions/tag@v0.1.71
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,7 +38,7 @@ jobs:
       # Set up the Python virtual environment with all required dependencies
       # This uses a reusable action from the cradle repository
       - name: "Build the virtual environment for ${{ github.repository }}"
-        uses: tschm/cradle/actions/environment@v0.1.69
+        uses: tschm/cradle/actions/environment@v0.1.71
 
       # Convert the Marimo notebook to HTML-WASM format
       # The WASM format allows for interactive elements to work in the browser
