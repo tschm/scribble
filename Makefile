@@ -44,11 +44,4 @@ help:  ## Display this help screen
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
 marimo: install ## Install Marimo
-	@uv pip install --no-cache-dir marimo
-	@uv run marimo edit app.py
-
-# Run the Marimo application
-.PHONY: app
-app: install ## Run the Marimo app
-	#@uv pip install --no-cache-dir marimo
 	@uvx marimo edit app.py
