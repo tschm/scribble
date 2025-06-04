@@ -7,24 +7,28 @@
 # Use system Python with uv
 UV_SYSTEM_PYTHON := 1
 
-# Create a virtual environment using uv
 venv:
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
 	@uv venv
+
+#	@uvx pip install -r requirements.txt
+
 
 
 # Mark install target as phony (not producing a file named 'install')
 .PHONY: install
 install: venv ## Install a virtual environment
-	@uv pip install --upgrade pip
 	@uv pip install --no-cache-dir -r requirements.txt
+
+#	@uv pip install --upgrade pip
+#	@uv pip install --no-cache-dir -r requirements.txt
 
 # Format and lint the code using pre-commit
 .PHONY: fmt
-fmt:  install ## Run autoformatting and linting
-	@uv pip install --no-cache-dir pre-commit
-	@uv run pre-commit install
-	@uv run pre-commit run --all-files
+fmt: venv ## Run autoformatting and linting
+	#@uv pip install --no-cache-dir pre-commit
+	@uvx pre-commit install
+	@uvx pre-commit run --all-files
 
 # Clean up generated files
 .PHONY: clean
@@ -33,9 +37,9 @@ clean:  ## Clean up caches and build artifacts
 
 # Run the test suite using pytest with coverage
 .PHONY: test
-test: ## Run tests with coverage
-	@uv run pip install --no-cache-dir pytest pytest-cov
-	@uv run python -m pytest -vv --cov=. --cov-report=term --cov-report=html tests
+test: install ## Run tests with coverage
+	@uv pip install --no-cache-dir pytest pytest-cov
+	@uv run pytest -vv tests
 
 # Display help information about available make targets
 .PHONY: help
@@ -52,5 +56,5 @@ marimo: install ## Install Marimo
 # Run the Marimo application
 .PHONY: app
 app: install ## Run the Marimo app
-	@uv pip install --no-cache-dir marimo
-	@uv run marimo run app.py
+	#@uv pip install --no-cache-dir marimo
+	@uvx marimo edit app.py
