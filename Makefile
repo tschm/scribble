@@ -11,22 +11,16 @@ venv:
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
 	@uv venv
 
-#	@uvx pip install -r requirements.txt
-
-
-
 # Mark install target as phony (not producing a file named 'install')
 .PHONY: install
 install: venv ## Install a virtual environment
+	@uv pip install --upgrade pip
 	@uv pip install --no-cache-dir -r requirements.txt
 
-#	@uv pip install --upgrade pip
-#	@uv pip install --no-cache-dir -r requirements.txt
 
 # Format and lint the code using pre-commit
 .PHONY: fmt
 fmt: venv ## Run autoformatting and linting
-	#@uv pip install --no-cache-dir pre-commit
 	@uvx pre-commit install
 	@uvx pre-commit run --all-files
 
