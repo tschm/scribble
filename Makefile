@@ -44,4 +44,4 @@ help:  ## Display this help screen
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
 marimo: install ## Install Marimo
-	@uvx marimo edit app.py
+	@uv run marimo edit app.py
