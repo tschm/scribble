@@ -8,3 +8,6 @@ plotly==6.1.2
 
 # Interactive notebook environment for data science
 marimo==0.13.15
+
+
+polars==1.30

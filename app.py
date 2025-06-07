@@ -5,31 +5,33 @@ import marimo
 __generated_with = "0.13.15"
 app = marimo.App()
 
+with app.setup:
+    import numpy as np
+    import plotly.graph_objs as go
 
 @app.cell
 def imports():
     import marimo as mo
-    import numpy as np
-    import plotly.graph_objs as go
-    return go, mo, np
+    return mo
 
 
-@app.cell
-def __function_map(np):
+@app.function
+def tanh_func(z):
+    """Hyperbolic tangent function: tanh((-1+2j)*z)"""
+    return np.tanh((-1+2j)*z)
 
-    # Define the complex functions
-    def tanh_func(z):
-        """Hyperbolic tangent function: tanh((-1+2j)*z)"""
-        return np.tanh((-1+2j)*z)
+@app.function
+def sinh_func(z):
+    """Hyperbolic sine function: sinh(3*z)"""
+    return np.sinh(3*z)
 
-    def sinh_func(z):
-        """Hyperbolic sine function: sinh(3*z)"""
-        return np.sinh(3*z)
+@app.function
+def exp_func(z):
+    """Exponential function: exp((-1+2j)*z)"""
+    return np.exp((-1+2j)*z)
 
-    def exp_func(z):
-        """Exponential function: exp((-1+2j)*z)"""
-        return np.exp((-1+2j)*z)
-
+@app.function
+def function_map():
     # Map function names to actual functions
     function_map = {
         "tanh((-1+2j)*z)": tanh_func,
@@ -37,91 +39,71 @@ def __function_map(np):
         "exp((-1+2j)*z)": exp_func
     }
 
-    return (function_map,)
+    return function_map
 
 
-@app.cell(hide_code=True)
-def _download(mo):
+@app.function
+def create_download_link(data: str, filename: str, mime: str = "text/plain"):
+    """
+    Create a download link for Marimo notebooks (works in WASM).
+
+    Args:
+        data: The string content to download.
+        filename: The name of the downloaded file.
+        mime: The MIME type of the file (default is "text/plain").
+
+    Returns:
+        mo.md object with a download anchor tag.
+    """
     import base64
 
-    def create_download_link(data: str, filename: str, mime: str = "text/plain") -> mo.md:
-        """
-        Create a download link for Marimo notebooks (works in WASM).
-
-        Args:
-            data: The string content to download.
-            filename: The name of the downloaded file.
-            mime: The MIME type of the file (default is "text/plain").
-
-        Returns:
-            mo.md object with a download anchor tag.
-        """
-        b64 = base64.b64encode(data.encode()).decode()
-        href = f'data:{mime};base64,{b64}'
-        html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
-        return mo.md(html)
-    return (create_download_link,)
+    b64 = base64.b64encode(data.encode()).decode()
+    href = f'data:{mime};base64,{b64}'
+    html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
+    return html
 
 
-@app.cell(hide_code=True)
-def _letter(np):
-    def letter(x: str) -> np.ndarray:
-        # I have copied this data straight from
-        # https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
-        __letters = {
-            "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
-            "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
-            "C": [0.8 + 1j, 0.8j, 0.2j, 0.8],
-            "D": [0, 0.8 + 0.1j, 0.8 + 0.9j, 1j, 0],
-            "E": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0, 0.8],
-            "F": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0],
-            "G": [0.8 + 1j, 0.8j, 0.2j, 0.6, 0.6 + 0.5j, 0.4 + 0.5j, 0.8 + 0.5j],
-            "H": [0, 1j, 0.5j, 0.5j + 0.8, 0.8 + 1j, 0.8],
-            "I": [0, 0.8, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "J": [0, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "K": [0, 1j, 0.5j, 0.8 + 1j, 0.5j, 0.8],
-            "L": [1j, 0, 0.8],
-            "M": [0, 0.1 + 1j, 0.4, 0.7 + 1j, 0.8],
-            "N": [0, 1j, 0.8, 0.8 + 1j],
-            "O": [0, 1j, 0.8 + 1j, 0.8, 0],
-            "Q": [0, 1j, 0.8 + 1j, 0.8, 0.6 + 0.2j, 0.9 - 0.1j, 0.8, 0],
-            "P": [0, 1j, 0.8 + 1j, 0.8 + 0.5j, 0.5j],
-            "R": [0, 1j, 0.8 + 1j, 0.8 + 0.6j, 0.5j, 0.8],
-            "S": [0.8 + 1j, 0.9j, 0.6j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
-            "T": [0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "U": [1j, 0.1, 0.7, 0.8 + 1j],
-            "V": [1j, 0.4, 0.8 + 1j],
-            "W": [1j, 0.2, 0.4 + 1j, 0.6, 0.8 + 1j],
-            "X": [1j, 0.8, 0.4 + 0.5j, 0.8 + 1j, 0],
-            "Y": [1j, 0.4 + 0.5j, 0.8 + 1j, 0.4 + 0.5j, 0.4],
-            "Z": [1j, 0.8 + 1j, 0, 0.8],
-            " ": [],
-        }
+@app.function
+def letter(x: str) -> np.ndarray:
+    # I have copied this data straight from
+    # https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
+    __letters = {
+        "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
+        "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
+        "C": [0.8 + 1j, 0.8j, 0.2j, 0.8],
+        "D": [0, 0.8 + 0.1j, 0.8 + 0.9j, 1j, 0],
+        "E": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0, 0.8],
+        "F": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0],
+        "G": [0.8 + 1j, 0.8j, 0.2j, 0.6, 0.6 + 0.5j, 0.4 + 0.5j, 0.8 + 0.5j],
+        "H": [0, 1j, 0.5j, 0.5j + 0.8, 0.8 + 1j, 0.8],
+        "I": [0, 0.8, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "J": [0, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "K": [0, 1j, 0.5j, 0.8 + 1j, 0.5j, 0.8],
+        "L": [1j, 0, 0.8],
+        "M": [0, 0.1 + 1j, 0.4, 0.7 + 1j, 0.8],
+        "N": [0, 1j, 0.8, 0.8 + 1j],
+        "O": [0, 1j, 0.8 + 1j, 0.8, 0],
+        "Q": [0, 1j, 0.8 + 1j, 0.8, 0.6 + 0.2j, 0.9 - 0.1j, 0.8, 0],
+        "P": [0, 1j, 0.8 + 1j, 0.8 + 0.5j, 0.5j],
+        "R": [0, 1j, 0.8 + 1j, 0.8 + 0.6j, 0.5j, 0.8],
+        "S": [0.8 + 1j, 0.9j, 0.6j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
+        "T": [0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "U": [1j, 0.1, 0.7, 0.8 + 1j],
+        "V": [1j, 0.4, 0.8 + 1j],
+        "W": [1j, 0.2, 0.4 + 1j, 0.6, 0.8 + 1j],
+        "X": [1j, 0.8, 0.4 + 0.5j, 0.8 + 1j, 0],
+        "Y": [1j, 0.4 + 0.5j, 0.8 + 1j, 0.4 + 0.5j, 0.4],
+        "Z": [1j, 0.8 + 1j, 0, 0.8],
+        " ": [],
+    }
 
-        return np.array(__letters[x.upper()])
-
-    return (letter,)
+    return np.array(__letters[x.upper()])
 
 
-@app.cell(hide_code=True)
-def _series(letter, np):
+@app.function
+def series(string: str, n: int, fct) -> list[np.ndarray]:
     from itertools import chain
     from typing import Generator
-
-    def series(string: str, n: int, fct) -> list[np.ndarray]:
-        segments = []
-        for i, _letter in enumerate(string):
-            # move pts to the correction position in a word
-            pts = letter(_letter) + i
-
-            # move pts to unit square
-            pts = 2 * pts / len(string) - 1
-
-            segments.append([fct(z) for z in list(__segment(pts, n=n))])
-
-        # segments is a list of list, flatten it
-        return list(chain.from_iterable(segments))
-
 
     def __segment(points: np.ndarray, n: int = 100) -> Generator[np.ndarray, None, None]:
         """
@@ -132,11 +114,24 @@ def _series(letter, np):
         for a, b in zip(points[:-1], points[1:]):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
-    return (series,)
+
+    segments = []
+    for i, _letter in enumerate(string):
+        # move pts to the correction position in a word
+        pts = letter(_letter) + i
+
+        # move pts to unit square
+        pts = 2 * pts / len(string) - 1
+
+        segments.append([fct(z) for z in list(__segment(pts, n=n))])
+
+    # segments is a list of list, flatten it
+    return list(chain.from_iterable(segments))
 
 
-@app.cell(hide_code=True)
-def _plot(go, np, series, function_map):
+
+@app.function
+def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
     from plotly.subplots import make_subplots
 
     # Create the figure with subplots: 2 rows, 1 column
@@ -230,18 +225,18 @@ def _plot(go, np, series, function_map):
         for trace in traces:
             fig.add_trace(trace, row=2, col=1)
 
-    def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
-        # Create the figure with subplots: 2 rows, 1 column
-        fig = _create_fig()
-        _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-        segments = list(series(name, n=n, fct=function_map[fct]))
 
-        _plot_letters(fig, segments)
-        _remove_axis(fig)
-        return fig
+    # Create the figure with subplots: 2 rows, 1 column
+    fig = _create_fig()
+    _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-    return (create,)
+    segments = list(series(name, n=n, fct=function_map()[fct]))
+
+    _plot_letters(fig, segments)
+    _remove_axis(fig)
+    return fig
+
 
 
 @app.cell
@@ -256,10 +251,10 @@ def __input_name(mo):
 
 
 @app.cell
-def __input_function(function_map, mo):
+def __input_function(mo):
 
     # Create dropdown with function names
-    options = list(function_map.keys())
+    options = list(function_map().keys())
     dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
 
     # Display the dropdown
@@ -286,11 +281,9 @@ def __input_event(mo):
 
 @app.cell
 def __output(
-    create,
-    create_download_link,
+    mo,
     dropdown,
     event,
-    mo,
     name,
 ):
     from io import StringIO
@@ -305,10 +298,10 @@ def __output(
     # Display the Plotly chart and provide a download button
     mo.vstack([
         mo.ui.plotly(fig),
-        create_download_link(
+        mo.md(create_download_link(
             data=buf.read(),
             filename=f"{name.value}_{event.value}_plot.html"
-        )
+        ))
     ])
     return
 
