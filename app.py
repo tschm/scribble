@@ -9,10 +9,11 @@ with app.setup:
     import numpy as np
     import plotly.graph_objs as go
 
+
 @app.cell
 def imports():
     import marimo as mo
-    return mo
+    return (mo,)
 
 
 @app.function
@@ -20,15 +21,18 @@ def tanh_func(z):
     """Hyperbolic tangent function: tanh((-1+2j)*z)"""
     return np.tanh((-1+2j)*z)
 
+
 @app.function
 def sinh_func(z):
     """Hyperbolic sine function: sinh(3*z)"""
     return np.sinh(3*z)
 
+
 @app.function
 def exp_func(z):
     """Exponential function: exp((-1+2j)*z)"""
     return np.exp((-1+2j)*z)
+
 
 @app.function
 def function_map():
@@ -36,7 +40,8 @@ def function_map():
     function_map = {
         "tanh((-1+2j)*z)": tanh_func,
         "sinh(3*z)": sinh_func,
-        "exp((-1+2j)*z)": exp_func
+        "exp((-1+2j)*z)": exp_func,
+        "custom": lambda z: np.exp((-1+2j)*4*z)
     }
 
     return function_map
@@ -127,7 +132,6 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
 
     # segments is a list of list, flatten it
     return list(chain.from_iterable(segments))
-
 
 
 @app.function
@@ -238,7 +242,6 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
     return fig
 
 
-
 @app.cell
 def __input_name(mo):
     name = mo.ui.text(placeholder="Name...")
@@ -280,12 +283,7 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(
-    mo,
-    dropdown,
-    event,
-    name,
-):
+def __output(dropdown, event, mo, name):
     from io import StringIO
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
