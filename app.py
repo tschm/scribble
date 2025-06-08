@@ -1,56 +1,54 @@
-# content of test_notebook.py
-
+"""Marimo app for generating table cards."""
 import marimo
 
 __generated_with = "0.13.15"
 app = marimo.App()
 
 with app.setup:
+    import base64
+    from io import StringIO
+    from itertools import chain
+
     import numpy as np
     import plotly.graph_objs as go
-
+    from plotly.subplots import make_subplots
 
 @app.cell
 def imports():
+    """Import the necessary modules and returns them as a tuple.
+
+    Returns:
+        tuple: A tuple containing the imported modules.
+
+    """
     import marimo as mo
     return (mo,)
 
 
 @app.function
-def tanh_func(z):
-    """Hyperbolic tangent function: tanh((-1+2j)*z)"""
-    return np.tanh((-1+2j)*z)
-
-
-@app.function
-def sinh_func(z):
-    """Hyperbolic sine function: sinh(3*z)"""
-    return np.sinh(3*z)
-
-
-@app.function
-def exp_func(z):
-    """Exponential function: exp((-1+2j)*z)"""
-    return np.exp((-1+2j)*z)
-
-
-@app.function
 def function_map():
-    # Map function names to actual functions
-    function_map = {
-        "tanh((-1+2j)*z)": tanh_func,
-        "sinh(3*z)": sinh_func,
-        "exp((-1+2j)*z)": exp_func,
-        "custom": lambda z: np.exp((-1+2j)*4*z)
-    }
+    """Define a function_map.
 
-    return function_map
+    The map returns a dictionary of mathematical expressions as keys and
+    their corresponding lambda functions as values. These lambda functions take a single
+    complex number argument and evaluate the associated expressions.
+
+    Returns:
+        Dict[str, Callable[[complex], complex]]: A dictionary mapping string representations
+        of mathematical expressions to lambda functions that evaluate these expressions
+        for a given complex input.
+
+    """
+    return {
+        "tanh((-1+2j)*z)": lambda z: np.tanh((-1+2j)*z),
+        "sinh(3*z)": lambda z: np.sinh(3*z),
+        "exp((-1+2j)*z)": lambda z: np.exp((-1+2j)*z),
+    }
 
 
 @app.function
 def create_download_link(data: str, filename: str, mime: str = "text/plain"):
-    """
-    Create a download link for Marimo notebooks (works in WASM).
+    """Create a download link for Marimo notebooks (works in WASM).
 
     Args:
         data: The string content to download.
@@ -59,9 +57,8 @@ def create_download_link(data: str, filename: str, mime: str = "text/plain"):
 
     Returns:
         mo.md object with a download anchor tag.
-    """
-    import base64
 
+    """
     b64 = base64.b64encode(data.encode()).decode()
     href = f'data:{mime};base64,{b64}'
     html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
@@ -70,8 +67,31 @@ def create_download_link(data: str, filename: str, mime: str = "text/plain"):
 
 @app.function
 def letter(x: str) -> np.ndarray:
-    # I have copied this data straight from
-    # https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
+    """Return the corresponding sequence of complex numbers.
+
+    Complex numbers are representing the
+    specified uppercase letter or space in a predefined format. Each complex
+    number denotes a point in the letter's outline.
+
+    I have copied this data straight from
+    https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
+
+    The function utilizes a fixed mapping of letters to their respective
+    complex number sequences to form shapes of specific letters.
+
+    Parameters
+    ----------
+    x : str
+        The uppercase letter or space to be represented. Must be a single
+        character string.
+
+    Returns
+    -------
+    numpy.ndarray
+        A NumPy array containing complex numbers representing the specified
+        letter's outline. Returns an empty array for a space character.
+
+    """
     __letters = {
         "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
         "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
@@ -107,16 +127,38 @@ def letter(x: str) -> np.ndarray:
 
 @app.function
 def series(string: str, n: int, fct) -> list[np.ndarray]:
-    from itertools import chain
-    from typing import Generator
+    """Generate a series of transformed points for a given string of letters.
 
-    def __segment(points: np.ndarray, n: int = 100) -> Generator[np.ndarray, None, None]:
-        """
-        Each letter is represented by a bunch of points a,b,c,d...
+    This function maps each letter to a set of points, transforms them to fit into
+    a unit square, and then applies a transformation function to each generated
+    segment. Each segment represents interpolated points between adjacent points of
+    a letter. The result is a flattened list of transformed points.
+
+    Parameters
+    ----------
+    string : str
+        A string where each character will be transformed into a series of points.
+    n : int
+        The number of auxiliary points to generate for each segment of a letter.
+    fct
+        A transformation function applied to the set of interpolated points.
+
+    Returns
+    -------
+    list[np.ndarray]
+        A flattened list of transformed points obtained by applying the transformation
+        function to segments of each letter's representation.
+
+    """
+
+    def __segment(points: np.ndarray, n: int = 100):
+        """Each letter is represented by a bunch of points a,b,c,d...
+
         There are straight segments between two adjacent points
-        We represent each such segment as a collection of n auxiliary points
+        We represent each such segment as a collection of n auxiliary points.
+
         """
-        for a, b in zip(points[:-1], points[1:]):
+        for a, b in zip(points[:-1], points[1:], strict=False):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
 
@@ -136,7 +178,30 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
 
 @app.function
 def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
-    from plotly.subplots import make_subplots
+    """Create a Plotly figure containing two subplots.
+
+    The top subplot contains upside-down text annotations showing the provided name, function,
+    and event. The bottom subplot visualizes traces of letter segments derived
+    from a mathematical series computation.
+
+    Arguments:
+        name: str
+            The name of the entity to be displayed as a part of the annotation.
+        fct: str
+            The name of the mathematical function to be used in the series
+            generation.
+        event: str
+            Details about the event to be included in the annotation.
+        n: int, optional
+            The number of terms in the series used to compute points for the
+            figure. Defaults to 100.
+
+    Returns:
+        go.Figure
+            A Plotly figure containing the constructed subplots and relevant
+            visualizations.
+
+    """
 
     # Create the figure with subplots: 2 rows, 1 column
     def _create_fig() -> go.Figure:
@@ -156,7 +221,7 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
             y=1,  # Y position at the top of the subplot
             text=word,  # The word to display
             showarrow=False,  # No arrow needed
-            font=dict(size=20, color="blue"),  # Text styling: large, blue font
+            font={"size": 20, "color": "blue"},  # Text styling: large, blue font
             textangle=180,  # Rotate text by 180 degrees (upside down)
             align="center",  # Center alignment
             valign="middle",  # Vertical alignment (centered)
@@ -170,7 +235,7 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
             plot_bgcolor="white",  # White background for clean look
             paper_bgcolor="white",  # White paper background
             showlegend=False,  # No legend needed
-            margin=dict(l=30, r=30, t=30, b=30),  # Margins around the plot
+            margin={"l": 30, "r": 30, "t": 30, "b": 30},  # Margins around the plot
         )
 
         # Update axes settings for the top subplot (hide grid, ticks, and lines)
@@ -250,7 +315,6 @@ def __input_name(mo):
         Enter the name of the guest: {name}
         """
     )
-    return (name,)
 
 
 @app.cell
@@ -267,9 +331,6 @@ def __input_function(mo):
         """
     )
 
-    # Return both the dropdown and the function map
-    return (dropdown,)
-
 
 @app.cell
 def __input_event(mo):
@@ -279,12 +340,10 @@ def __input_event(mo):
         Enter the name of the event: {event}
         """
     )
-    return (event,)
 
 
 @app.cell
-def __output(dropdown, event, mo, name):
-    from io import StringIO
+def __output(mo, dropdown, event, name):
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
 
@@ -301,7 +360,7 @@ def __output(dropdown, event, mo, name):
             filename=f"{name.value}_{event.value}_plot.html"
         ))
     ])
-    return
+    # return
 
 
 if __name__ == "__main__":

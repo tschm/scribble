@@ -4,4 +4,24 @@ exclude = [
 line-length = 120
 target-version = "py312"
 
-lint.select = ["E", "F", "I"]
+
+# Current configuration:
+# Lint rule explanations:
+# E: pycodestyle errors (https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes)
+# F: Pyflakes (detecting various errors like unused imports)
+# I: isort (import sorting)
+# N: pep8-naming (PEP 8 naming conventions)
+# D: pydocstyle (docstring style checking)
+# UP: pyupgrade (upgrade syntax for newer Python)
+# NPY: NumPy-specific rules
+# PD: pandas-specific rules
+# C4: flake8-comprehensions (better list/dict/set comprehensions)
+# B: flake8-bugbear (detecting potential bugs and design problems)
+# S: flake8-bandit (security issues)
+# W: pycodestyle warnings
+
+lint.select = ["E", "F", "I", "N", "D", "UP", "NPY", "PD", "C4", "B", "S", "W"]
+
+# Per-file rule ignores
+[lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]  # Allow assert statements in tests
