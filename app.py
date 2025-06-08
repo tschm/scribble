@@ -1,143 +1,207 @@
-# content of test_notebook.py
-
+"""Marimo app for generating table cards."""
 import marimo
 
 __generated_with = "0.13.15"
 app = marimo.App()
 
+with app.setup:
+    import base64
+    from io import StringIO
+    from itertools import chain
+
+    import numpy as np
+    import plotly.graph_objs as go
+    from plotly.subplots import make_subplots
 
 @app.cell
 def imports():
+    """Import the necessary modules and returns them as a tuple.
+
+    Returns:
+        tuple: A tuple containing the imported modules.
+
+    """
     import marimo as mo
-    import numpy as np
-    import plotly.graph_objs as go
-    return go, mo, np
+    return (mo,)
 
 
-@app.cell
-def __function_map(np):
+@app.function
+def function_map():
+    """Define a function_map.
 
-    # Define the complex functions
-    def tanh_func(z):
-        """Hyperbolic tangent function: tanh((-1+2j)*z)"""
-        return np.tanh((-1+2j)*z)
+    The map returns a dictionary of mathematical expressions as keys and
+    their corresponding lambda functions as values. These lambda functions take a single
+    complex number argument and evaluate the associated expressions.
 
-    def sinh_func(z):
-        """Hyperbolic sine function: sinh(3*z)"""
-        return np.sinh(3*z)
+    Returns:
+        Dict[str, Callable[[complex], complex]]: A dictionary mapping string representations
+        of mathematical expressions to lambda functions that evaluate these expressions
+        for a given complex input.
 
-    def exp_func(z):
-        """Exponential function: exp((-1+2j)*z)"""
-        return np.exp((-1+2j)*z)
-
-    # Map function names to actual functions
-    function_map = {
-        "tanh((-1+2j)*z)": tanh_func,
-        "sinh(3*z)": sinh_func,
-        "exp((-1+2j)*z)": exp_func
+    """
+    return {
+        "tanh((-1+2j)*z)": lambda z: np.tanh((-1+2j)*z),
+        "sinh(3*z)": lambda z: np.sinh(3*z),
+        "exp((-1+2j)*z)": lambda z: np.exp((-1+2j)*z),
     }
 
-    return (function_map,)
+
+@app.function
+def create_download_link(data: str, filename: str, mime: str = "text/plain"):
+    """Create a download link for Marimo notebooks (works in WASM).
+
+    Args:
+        data: The string content to download.
+        filename: The name of the downloaded file.
+        mime: The MIME type of the file (default is "text/plain").
+
+    Returns:
+        mo.md object with a download anchor tag.
+
+    """
+    b64 = base64.b64encode(data.encode()).decode()
+    href = f'data:{mime};base64,{b64}'
+    html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
+    return html
 
 
-@app.cell(hide_code=True)
-def _download(mo):
-    import base64
+@app.function
+def letter(x: str) -> np.ndarray:
+    """Return the corresponding sequence of complex numbers.
 
-    def create_download_link(data: str, filename: str, mime: str = "text/plain") -> mo.md:
-        """
-        Create a download link for Marimo notebooks (works in WASM).
+    Complex numbers are representing the
+    specified uppercase letter or space in a predefined format. Each complex
+    number denotes a point in the letter's outline.
 
-        Args:
-            data: The string content to download.
-            filename: The name of the downloaded file.
-            mime: The MIME type of the file (default is "text/plain").
+    I have copied this data straight from
+    https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
 
-        Returns:
-            mo.md object with a download anchor tag.
-        """
-        b64 = base64.b64encode(data.encode()).decode()
-        href = f'data:{mime};base64,{b64}'
-        html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
-        return mo.md(html)
-    return (create_download_link,)
+    The function utilizes a fixed mapping of letters to their respective
+    complex number sequences to form shapes of specific letters.
 
+    Parameters
+    ----------
+    x : str
+        The uppercase letter or space to be represented. Must be a single
+        character string.
 
-@app.cell(hide_code=True)
-def _letter(np):
-    def letter(x: str) -> np.ndarray:
-        # I have copied this data straight from
-        # https://github.com/asgeirbirkis/chebfun/blob/master/scribble.m
-        __letters = {
-            "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
-            "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
-            "C": [0.8 + 1j, 0.8j, 0.2j, 0.8],
-            "D": [0, 0.8 + 0.1j, 0.8 + 0.9j, 1j, 0],
-            "E": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0, 0.8],
-            "F": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0],
-            "G": [0.8 + 1j, 0.8j, 0.2j, 0.6, 0.6 + 0.5j, 0.4 + 0.5j, 0.8 + 0.5j],
-            "H": [0, 1j, 0.5j, 0.5j + 0.8, 0.8 + 1j, 0.8],
-            "I": [0, 0.8, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "J": [0, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "K": [0, 1j, 0.5j, 0.8 + 1j, 0.5j, 0.8],
-            "L": [1j, 0, 0.8],
-            "M": [0, 0.1 + 1j, 0.4, 0.7 + 1j, 0.8],
-            "N": [0, 1j, 0.8, 0.8 + 1j],
-            "O": [0, 1j, 0.8 + 1j, 0.8, 0],
-            "Q": [0, 1j, 0.8 + 1j, 0.8, 0.6 + 0.2j, 0.9 - 0.1j, 0.8, 0],
-            "P": [0, 1j, 0.8 + 1j, 0.8 + 0.5j, 0.5j],
-            "R": [0, 1j, 0.8 + 1j, 0.8 + 0.6j, 0.5j, 0.8],
-            "S": [0.8 + 1j, 0.9j, 0.6j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
-            "T": [0.4, 0.4 + 1j, 1j, 0.8 + 1j],
-            "U": [1j, 0.1, 0.7, 0.8 + 1j],
-            "V": [1j, 0.4, 0.8 + 1j],
-            "W": [1j, 0.2, 0.4 + 1j, 0.6, 0.8 + 1j],
-            "X": [1j, 0.8, 0.4 + 0.5j, 0.8 + 1j, 0],
-            "Y": [1j, 0.4 + 0.5j, 0.8 + 1j, 0.4 + 0.5j, 0.4],
-            "Z": [1j, 0.8 + 1j, 0, 0.8],
-            " ": [],
-        }
+    Returns
+    -------
+    numpy.ndarray
+        A NumPy array containing complex numbers representing the specified
+        letter's outline. Returns an empty array for a space character.
 
-        return np.array(__letters[x.upper()])
+    """
+    __letters = {
+        "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
+        "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
+        "C": [0.8 + 1j, 0.8j, 0.2j, 0.8],
+        "D": [0, 0.8 + 0.1j, 0.8 + 0.9j, 1j, 0],
+        "E": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0, 0.8],
+        "F": [0.8 + 1j, 1j, 0.5j, 0.5j + 0.7, 0.5j, 0],
+        "G": [0.8 + 1j, 0.8j, 0.2j, 0.6, 0.6 + 0.5j, 0.4 + 0.5j, 0.8 + 0.5j],
+        "H": [0, 1j, 0.5j, 0.5j + 0.8, 0.8 + 1j, 0.8],
+        "I": [0, 0.8, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "J": [0, 0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "K": [0, 1j, 0.5j, 0.8 + 1j, 0.5j, 0.8],
+        "L": [1j, 0, 0.8],
+        "M": [0, 0.1 + 1j, 0.4, 0.7 + 1j, 0.8],
+        "N": [0, 1j, 0.8, 0.8 + 1j],
+        "O": [0, 1j, 0.8 + 1j, 0.8, 0],
+        "Q": [0, 1j, 0.8 + 1j, 0.8, 0.6 + 0.2j, 0.9 - 0.1j, 0.8, 0],
+        "P": [0, 1j, 0.8 + 1j, 0.8 + 0.5j, 0.5j],
+        "R": [0, 1j, 0.8 + 1j, 0.8 + 0.6j, 0.5j, 0.8],
+        "S": [0.8 + 1j, 0.9j, 0.6j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
+        "T": [0.4, 0.4 + 1j, 1j, 0.8 + 1j],
+        "U": [1j, 0.1, 0.7, 0.8 + 1j],
+        "V": [1j, 0.4, 0.8 + 1j],
+        "W": [1j, 0.2, 0.4 + 1j, 0.6, 0.8 + 1j],
+        "X": [1j, 0.8, 0.4 + 0.5j, 0.8 + 1j, 0],
+        "Y": [1j, 0.4 + 0.5j, 0.8 + 1j, 0.4 + 0.5j, 0.4],
+        "Z": [1j, 0.8 + 1j, 0, 0.8],
+        " ": [],
+    }
 
-    return (letter,)
+    return np.array(__letters[x.upper()])
 
 
-@app.cell(hide_code=True)
-def _series(letter, np):
-    from itertools import chain
-    from typing import Generator
+@app.function
+def series(string: str, n: int, fct) -> list[np.ndarray]:
+    """Generate a series of transformed points for a given string of letters.
 
-    def series(string: str, n: int, fct) -> list[np.ndarray]:
-        segments = []
-        for i, _letter in enumerate(string):
-            # move pts to the correction position in a word
-            pts = letter(_letter) + i
+    This function maps each letter to a set of points, transforms them to fit into
+    a unit square, and then applies a transformation function to each generated
+    segment. Each segment represents interpolated points between adjacent points of
+    a letter. The result is a flattened list of transformed points.
 
-            # move pts to unit square
-            pts = 2 * pts / len(string) - 1
+    Parameters
+    ----------
+    string : str
+        A string where each character will be transformed into a series of points.
+    n : int
+        The number of auxiliary points to generate for each segment of a letter.
+    fct
+        A transformation function applied to the set of interpolated points.
 
-            segments.append([fct(z) for z in list(__segment(pts, n=n))])
+    Returns
+    -------
+    list[np.ndarray]
+        A flattened list of transformed points obtained by applying the transformation
+        function to segments of each letter's representation.
 
-        # segments is a list of list, flatten it
-        return list(chain.from_iterable(segments))
+    """
 
+    def __segment(points: np.ndarray, n: int = 100):
+        """Each letter is represented by a bunch of points a,b,c,d...
 
-    def __segment(points: np.ndarray, n: int = 100) -> Generator[np.ndarray, None, None]:
-        """
-        Each letter is represented by a bunch of points a,b,c,d...
         There are straight segments between two adjacent points
-        We represent each such segment as a collection of n auxiliary points
+        We represent each such segment as a collection of n auxiliary points.
+
         """
-        for a, b in zip(points[:-1], points[1:]):
+        for a, b in zip(points[:-1], points[1:], strict=False):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
-    return (series,)
+
+    segments = []
+    for i, _letter in enumerate(string):
+        # move pts to the correction position in a word
+        pts = letter(_letter) + i
+
+        # move pts to unit square
+        pts = 2 * pts / len(string) - 1
+
+        segments.append([fct(z) for z in list(__segment(pts, n=n))])
+
+    # segments is a list of list, flatten it
+    return list(chain.from_iterable(segments))
 
 
-@app.cell(hide_code=True)
-def _plot(go, np, series, function_map):
-    from plotly.subplots import make_subplots
+@app.function
+def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
+    """Create a Plotly figure containing two subplots.
+
+    The top subplot contains upside-down text annotations showing the provided name, function,
+    and event. The bottom subplot visualizes traces of letter segments derived
+    from a mathematical series computation.
+
+    Arguments:
+        name: str
+            The name of the entity to be displayed as a part of the annotation.
+        fct: str
+            The name of the mathematical function to be used in the series
+            generation.
+        event: str
+            Details about the event to be included in the annotation.
+        n: int, optional
+            The number of terms in the series used to compute points for the
+            figure. Defaults to 100.
+
+    Returns:
+        go.Figure
+            A Plotly figure containing the constructed subplots and relevant
+            visualizations.
+
+    """
 
     # Create the figure with subplots: 2 rows, 1 column
     def _create_fig() -> go.Figure:
@@ -157,7 +221,7 @@ def _plot(go, np, series, function_map):
             y=1,  # Y position at the top of the subplot
             text=word,  # The word to display
             showarrow=False,  # No arrow needed
-            font=dict(size=20, color="blue"),  # Text styling: large, blue font
+            font={"size": 20, "color": "blue"},  # Text styling: large, blue font
             textangle=180,  # Rotate text by 180 degrees (upside down)
             align="center",  # Center alignment
             valign="middle",  # Vertical alignment (centered)
@@ -171,7 +235,7 @@ def _plot(go, np, series, function_map):
             plot_bgcolor="white",  # White background for clean look
             paper_bgcolor="white",  # White paper background
             showlegend=False,  # No legend needed
-            margin=dict(l=30, r=30, t=30, b=30),  # Margins around the plot
+            margin={"l": 30, "r": 30, "t": 30, "b": 30},  # Margins around the plot
         )
 
         # Update axes settings for the top subplot (hide grid, ticks, and lines)
@@ -230,18 +294,17 @@ def _plot(go, np, series, function_map):
         for trace in traces:
             fig.add_trace(trace, row=2, col=1)
 
-    def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
-        # Create the figure with subplots: 2 rows, 1 column
-        fig = _create_fig()
-        _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-        segments = list(series(name, n=n, fct=function_map[fct]))
 
-        _plot_letters(fig, segments)
-        _remove_axis(fig)
-        return fig
+    # Create the figure with subplots: 2 rows, 1 column
+    fig = _create_fig()
+    _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
 
-    return (create,)
+    segments = list(series(name, n=n, fct=function_map()[fct]))
+
+    _plot_letters(fig, segments)
+    _remove_axis(fig)
+    return fig
 
 
 @app.cell
@@ -252,14 +315,13 @@ def __input_name(mo):
         Enter the name of the guest: {name}
         """
     )
-    return (name,)
 
 
 @app.cell
-def __input_function(function_map, mo):
+def __input_function(mo):
 
     # Create dropdown with function names
-    options = list(function_map.keys())
+    options = list(function_map().keys())
     dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
 
     # Display the dropdown
@@ -268,9 +330,6 @@ def __input_function(function_map, mo):
         Enter the complex function: {dropdown}
         """
     )
-
-    # Return both the dropdown and the function map
-    return (dropdown,)
 
 
 @app.cell
@@ -281,19 +340,10 @@ def __input_event(mo):
         Enter the name of the event: {event}
         """
     )
-    return (event,)
 
 
 @app.cell
-def __output(
-    create,
-    create_download_link,
-    dropdown,
-    event,
-    mo,
-    name,
-):
-    from io import StringIO
+def __output(mo, dropdown, event, name):
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
 
@@ -305,12 +355,12 @@ def __output(
     # Display the Plotly chart and provide a download button
     mo.vstack([
         mo.ui.plotly(fig),
-        create_download_link(
+        mo.md(create_download_link(
             data=buf.read(),
             filename=f"{name.value}_{event.value}_plot.html"
-        )
+        ))
     ])
-    return
+    # return
 
 
 if __name__ == "__main__":
