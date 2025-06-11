@@ -1,5 +1,6 @@
 """Testing the plots."""
 import plotly.graph_objs as go
+import pytest
 
 from app import create
 
@@ -12,43 +13,22 @@ figure object.
 """
 
 
-def test_create_returns_figure():
-    """Test that the create function returns a plotly Figure."""
-    fig = create(name="Thomas", fct="sinh(3*z)", event="wedding", n=100)
+@pytest.mark.parametrize(
+    "name, fct, event, n, test_id",
+    [
+        ("Thomas", "sinh(3*z)", "wedding", 100, "default"),  # Default parameters
+        ("Test", "sinh(3*z)", "wedding", 100, "different_name"),  # Test with different name
+        ("Thomas", "exp((-1+2j)*z)", "wedding", 100, "different_function"),  # Test with different function
+        ("Thomas", "sinh(3*z)", "test", 100, "different_event"),  # Test with different event
+        ("Thomas", "sinh(3*z)", "wedding", 50, "different_n"),  # Test with different n
+        ("", "sinh(3*z)", "wedding", 100, "empty_name"),  # Test with empty name
+    ],
+    ids=lambda param: param[4] if isinstance(param, tuple) else str(param),
+)
+def test_create_returns_figure(name, fct, event, n, test_id):
+    """Test that the create function returns a plotly Figure with various parameters."""
+    fig = create(name, fct, event, n=n)
     assert isinstance(fig, go.Figure)
-
-
-def test_create_with_different_parameters():
-    """Test that the create function works with different parameters."""
-    # Test with different name
-    fig1 = create("Test", "sinh(3*z)", "wedding", n=100)
-    assert isinstance(fig1, go.Figure)
-
-    # Test with different function
-    fig2 = create("Thomas", "exp((-1+2j)*z)", "wedding", n=100)
-    assert isinstance(fig2, go.Figure)
-
-    # Test with different event
-    fig3 = create("Thomas", "sinh(3*z)", "test", n=100)
-    assert isinstance(fig3, go.Figure)
-
-    # Test with different n
-    fig4 = create("Thomas", "sinh(3*z)", "wedding", n=50)
-    assert isinstance(fig4, go.Figure)
-
-
-def test_create_with_empty_name():
-    """Test that the create function works with an empty name."""
-    fig = create("", "sinh(3*z)", "wedding", n=100)
-    assert isinstance(fig, go.Figure)
-
-
-def test_figure_has_correct_structure():
-    """Test that the figure has the correct structure."""
-    fig = create("Thomas", "sinh(3*z)", "wedding", n=100)
-
-    # The figure should have traces (at least one)
-    assert len(fig.data) > 0
 
     # The figure should have two subplots (rows)
     assert len(fig.layout.annotations) > 0
