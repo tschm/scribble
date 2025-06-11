@@ -36,6 +36,7 @@ jobs:
       - name: Extract dependencies from app.py
         shell: bash
         run: |
+          uv venv
           grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
 
       # Create virtual environment and install dependencies
