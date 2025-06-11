@@ -39,7 +39,7 @@ jobs:
           uv venv
           grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
           uv pip install --no-cache-dir pytest pytest-cov
-          
+
       # Execute the test suite using pytest with coverage
       - name: Run tests
         shell: bash
