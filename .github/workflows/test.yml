@@ -37,7 +37,9 @@ jobs:
         shell: bash
         run: |
           uv venv
-          grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
+          uv export --script app.py --no-hashes --no-annotate --no-header | xargs -n1 uv pip install
+          #uv export --script app.py --ho-hashes --no-annotate --no-header |  xargs -I{} uv pip install {}
+          #grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
           uv pip install --no-cache-dir pytest pytest-cov
 
       # Execute the test suite using pytest with coverage
