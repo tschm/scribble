@@ -29,7 +29,7 @@ jobs:
           uv venv
           uv pip install --no-cache-dir marimo
           uv pip install --no-cache-dir numpy==2.3.0 plotly==6.1.2
-          uv marimo run app.py --sandbox --no-browser &
+          uv run marimo run app.py --sandbox --no-browser &
           pid=$!
           sleep 1
           kill $pid
