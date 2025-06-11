@@ -43,16 +43,11 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Install marimo
-        run: |
-          uv venv
-          uv pip install --no-cache-dir marimo
-
       # Convert the Marimo notebook to HTML-WASM format
       # The WASM format allows for interactive elements to work in the browser
       - name: Convert notebook to HTML
         run: |
-          #uv run pip install --no-cache-dir marimo
+          # this works as the dependencies are defined within the app.py file
           mkdir -p artifacts/marimo
           uvx marimo export html-wasm app.py -o artifacts/marimo/index.html --mode run
 

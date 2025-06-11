@@ -25,8 +25,10 @@ clean:  ## Clean up caches and build artifacts
 # Run the test suite using pytest with coverage
 .PHONY: test
 test: venv ## Run tests with coverage
-	@uv pip install --no-cache-dir pytest pytest-cov
-	@uv run pytest -vv tests
+	echo "# Installing dependencies..."
+	grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
+	uv pip install --no-cache-dir pytest
+	uv run pytest -vv tests
 
 # Display help information about available make targets
 .PHONY: help
@@ -37,4 +39,5 @@ help:  ## Display this help screen
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
 marimo: venv ## Install Marimo
+	# will install dependencies straight out of app.py
 	@uvx marimo edit app.py --sandbox
