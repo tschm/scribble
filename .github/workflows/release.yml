@@ -35,10 +35,18 @@ jobs:
   marimo:
     runs-on: ubuntu-latest
     steps:
-      # Set up the Python virtual environment with all required dependencies
-      # This uses a reusable action from the cradle repository
-      - name: "Build the virtual environment for ${{ github.repository }}"
-        uses: tschm/cradle/actions/environment@v0.1.72
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
+
+      - name: Install the latest version of uv and set the python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: 3.13
+
+      - name: Install marimo
+        run: |
+          uv venv
+          uv pip install --no-cache-dir marimo
 
       # Convert the Marimo notebook to HTML-WASM format
       # The WASM format allows for interactive elements to work in the browser
