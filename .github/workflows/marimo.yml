@@ -15,10 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Build the virtual environment for ${{ github.repository }}"
-        uses: tschm/cradle/actions/environment@v0.1.72
+      # Check out the repository code
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
+
+      - name: Install the latest version of uv and set the python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: 3.13
 
       - name: Run notebook
         run: |
+          uv venv
           uv pip install --no-cache-dir marimo
-          uv run python app.py
+          uv pip install --no-cache-dir numpy==2.3.0 plotly==6.1.2
+          uv marimo run app.py --sandbox --no-browser &
+          pid=$!
+          sleep 1
+          kill $pid
