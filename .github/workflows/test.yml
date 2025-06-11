@@ -33,13 +33,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Extract dependencies from app.py
+        shell: bash
+        run: |
+          @grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
+
       # Create virtual environment and install dependencies
       - name: Run pytest
         shell: bash
         run: |
           uv venv
           uv pip install --no-cache-dir pytest pytest-cov
-          uv pip install --no-cache-dir -r requirements.txt
+
 
       # Execute the test suite using pytest with coverage
       - name: Run tests
