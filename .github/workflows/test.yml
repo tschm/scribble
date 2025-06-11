@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           uv venv
-          uv add app.py
+          uv tree --script app.py --depth 0 | awk '{print $1 "==" $2}' | xargs -n1 uv pip install
 
           #uv export --script app.py --no-hashes --no-annotate --no-header | xargs -n1 uv pip install
           #uv export --script app.py --ho-hashes --no-annotate --no-header |  xargs -I{} uv pip install {}
