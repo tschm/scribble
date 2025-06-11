@@ -14,7 +14,7 @@ with app.setup:
     from plotly.subplots import make_subplots
 
 @app.cell
-def imports():
+def _():
     """Import the necessary modules and returns them as a tuple.
 
     Returns:
