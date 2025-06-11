@@ -11,13 +11,6 @@ venv:
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
 	@uv venv
 
-# Mark install target as phony (not producing a file named 'install')
-.PHONY: install
-install: venv ## Install a virtual environment
-	@uv pip install --upgrade pip
-	@uv pip install --no-cache-dir -r requirements.txt
-
-
 # Format and lint the code using pre-commit
 .PHONY: fmt
 fmt: venv ## Run autoformatting and linting
@@ -31,7 +24,7 @@ clean:  ## Clean up caches and build artifacts
 
 # Run the test suite using pytest with coverage
 .PHONY: test
-test: install ## Run tests with coverage
+test: venv ## Run tests with coverage
 	@uv pip install --no-cache-dir pytest pytest-cov
 	@uv run pytest -vv tests
 
@@ -43,5 +36,5 @@ help:  ## Display this help screen
 
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
-marimo: install ## Install Marimo
-	@uv run marimo edit app.py
+marimo: venv ## Install Marimo
+	@uvx marimo edit app.py --sandbox
