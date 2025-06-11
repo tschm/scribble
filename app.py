@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "marimo==0.13.15",
+#     "numpy==2.2.3",
+#     "plotly==6.1.2",
+# ]
+# ///
 """Marimo app for generating table cards."""
 
 # /// script
