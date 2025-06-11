@@ -8,14 +8,6 @@
 # ///
 """Marimo app for generating table cards."""
 
-# /// script
-# requires-python = ">=3.13"
-# dependencies = [
-#     "marimo==0.13.15",
-#     "numpy==2.2.3",
-#     "plotly==6.1.2",
-# ]
-# ///
 
 import marimo
 
@@ -378,7 +370,7 @@ def __output(mo, dropdown, event, name):
             filename=f"{name.value}_{event.value}_plot.html"
         ))
     ])
-    # return
+    return
 
 
 if __name__ == "__main__":
