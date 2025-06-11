@@ -43,9 +43,7 @@ jobs:
       - name: Run pytest
         shell: bash
         run: |
-          uv venv
           uv pip install --no-cache-dir pytest pytest-cov
-
 
       # Execute the test suite using pytest with coverage
       - name: Run tests
