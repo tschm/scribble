@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           uv venv
-          uv pip install --from app.py
+          uv pip install app.py
 
           #uv export --script app.py --no-hashes --no-annotate --no-header | xargs -n1 uv pip install
           #uv export --script app.py --ho-hashes --no-annotate --no-header |  xargs -I{} uv pip install {}
