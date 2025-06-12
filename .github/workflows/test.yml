@@ -34,7 +34,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Extract dependencies from app.py
-        shell: bash
         run: |
           uv venv
           uv tree --script app.py --depth 0 | awk '{print $1 "==" $2}' | xargs -n1 uv pip install
@@ -42,7 +41,6 @@ jobs:
 
       # Execute the test suite using pytest with coverage
       - name: Run tests
-        shell: bash
         run: |
           uv run python -m pytest -vv --cov=. --cov-report=term --cov-report=xml tests
 
