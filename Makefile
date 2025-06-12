@@ -7,13 +7,12 @@
 # Use system Python with uv
 UV_SYSTEM_PYTHON := 1
 
-venv:
+uv:
 	@curl -LsSf https://astral.sh/uv/install.sh | sh
-	@uv venv
 
 # Format and lint the code using pre-commit
 .PHONY: fmt
-fmt: venv ## Run autoformatting and linting
+fmt: uv ## Run autoformatting and linting
 	@uvx pre-commit install
 	@uvx pre-commit run --all-files
 
@@ -24,7 +23,7 @@ clean:  ## Clean up caches and build artifacts
 
 # Run the test suite using pytest with coverage
 .PHONY: test
-test: venv ## Run tests with coverage
+test: uv ## Run tests with coverage
 	echo "# Installing dependencies..."
 	grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
 	uv pip install --no-cache-dir pytest
@@ -38,6 +37,6 @@ help:  ## Display this help screen
 
 # Install and run Marimo for interactive notebooks
 .PHONY: marimo
-marimo: venv ## Install Marimo
+marimo: uv ## Install Marimo
 	# will install dependencies straight out of app.py
 	@uvx marimo edit app.py --sandbox
