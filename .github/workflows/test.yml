@@ -36,7 +36,7 @@ jobs:
       - name: Extract dependencies from app.py
         run: |
           uv venv
-          uv tree --script app.py --depth 0 | awk '{print $1 "==" $2}' | xargs -n1 uv pip install
+          uv tree --script apps/app.py --depth 0 | awk '{print $1 "==" $2}' | xargs -n1 uv pip install
           uv pip install --no-cache-dir pytest pytest-cov
 
       # Execute the test suite using pytest with coverage
