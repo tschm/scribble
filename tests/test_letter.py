@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from app import letter
+from apps.app import letter
 
 
 def test_letter_returns_array():

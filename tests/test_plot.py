@@ -2,7 +2,7 @@
 import plotly.graph_objs as go
 import pytest
 
-from app import create
+from apps.app import create
 
 """Test suite for assessing the behavior and features of the plot creation function.
 

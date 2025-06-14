@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from app import series
+from apps.app import series
 
 
 @pytest.fixture()

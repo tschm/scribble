@@ -1,7 +1,7 @@
 """Tests for the create_download_link function in app.py."""
 import base64
 
-from app import create_download_link
+from apps.app import create_download_link
 
 
 def test_create_download_link_basic():

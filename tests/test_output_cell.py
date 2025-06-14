@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import marimo as mo
 
-from app import __output
+from apps.app import __output
 
 
 def test_output_cell():

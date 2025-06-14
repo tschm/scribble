@@ -1,7 +1,7 @@
 """Tests for the __input_event function in app.py."""
 import marimo as mo
 
-from app import __input_event, __input_function, __input_name
+from apps.app import __input_event, __input_function, __input_name
 
 
 def test_input_event():
