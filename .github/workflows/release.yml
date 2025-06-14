@@ -33,7 +33,7 @@ jobs:
   # Job to build the HTML page from the Marimo notebook
   # This job converts the app.py Marimo notebook to HTML and prepares it for deployment
   # The build job exports marimo notebooks to static HTML/WebAssembly
-  build:
+  marimo:
     needs: tagging
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
@@ -45,22 +45,18 @@ jobs:
 
 
   # The deploy job publishes the built site to GitHub Pages
+  # Job to combine all artifacts and prepare them for deployment
+  # This job runs after both jupyter and marimo jobs have completed
   deploy:
-    needs: build  # This job depends on the build job completing successfully
+    runs-on: ubuntu-latest
 
-    # Required permissions for the GitHub Pages deployment
-    permissions:
-      pages: write      # Permission to deploy to Pages
-      id-token: write   # Permission to verify the deployment
+    needs: [marimo]  # This job depends on both jupyter and marimo jobs
 
-    # Configure the deployment environment
     environment:
-      name: github-pages                             # Deploy to the github-pages environment
-      url: ${{ steps.deployment.outputs.page_url }}  # Use the URL from the deployment step
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
-      # Deploy the site to GitHub Pages using the official action
-      - name: 🚀 Deploy to GitHub Pages
-        id: deployment                 # ID used to reference this step's outputs
-        uses: actions/deploy-pages@v4  # GitHub's official Pages deployment action
+      - name: Publish book
+        id: deployment
+        uses: tschm/cradle/actions/book@v0.1.71
