@@ -13,7 +13,6 @@ uv:
 # Format and lint the code using pre-commit
 .PHONY: fmt
 fmt: uv ## Run autoformatting and linting
-	@uvx pre-commit install
 	@uvx pre-commit run --all-files
 
 # Clean up generated files
@@ -39,4 +38,4 @@ help:  ## Display this help screen
 .PHONY: marimo
 marimo: uv ## Install Marimo
 	# will install dependencies straight out of app.py
-	@uvx marimo edit app.py --sandbox
+	@uvx marimo edit apps/app.py --sandbox
