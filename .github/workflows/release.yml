@@ -34,14 +34,11 @@ jobs:
   # This job converts the app.py Marimo notebook to HTML and prepares it for deployment
   # The build job exports marimo notebooks to static HTML/WebAssembly
   marimo:
-    needs: tagging
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
-      - uses: tschm/marimushka/actions/export@main
-        #with:
-        #  template: 'templates/bare.html.j2'
-        # declare which template
-        # declare folder names
+      - uses: tschm/marimushka/actions/export@v0.0.8
+        with:
+          apps: 'apps'
 
 
   # The deploy job publishes the built site to GitHub Pages
