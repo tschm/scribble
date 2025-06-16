@@ -52,11 +52,11 @@ making it accessible without requiring MATLAB.
 
 ### 📋 Prerequisites
 
-- Python 3.10+
-- Dependencies listed in `requirements.txt`:
-  - numpy: For numerical operations
-  - plotly: For creating interactive visualizations
-  - marimo: For the interactive web interface
+- Python 3.12+
+- Dependencies:
+  - marimo==0.13.15: For the interactive web interface
+  - numpy==2.2.3: For numerical operations
+  - plotly==6.1.2: For creating interactive visualizations
 
 ### 🔧 Installation
 
@@ -65,17 +65,14 @@ making it accessible without requiring MATLAB.
 git clone https://github.com/tschm/scribble.git
 cd scribble
 
-# Install dependencies
-make install
+# Install uv (Python package manager)
+make uv
 ```
 
 ### 🎨 Running the Application
 
 ```bash
-# Start the Marimo app in production mode
-make app
-
-# For development mode
+# Start the Marimo app in development mode
 make marimo
 ```
 
@@ -89,16 +86,14 @@ make marimo
 
 ## 🧪 Testing
 
-The project includes tests to ensure functionality and measure code coverage:
+The project includes tests to ensure functionality:
 
 ```bash
-# Run tests with coverage measurement
+# Run tests
 make test
 ```
 
-This will run the tests and generate a coverage report in both terminal
-output and HTML format. The HTML report will be available in the `htmlcov`
-directory, which you can open in a web browser to see detailed coverage information.
+This will install the necessary dependencies and run the tests using pytest.
 
 [![codecov](https://codecov.io/gh/tschm/scribble/branch/main/graph/badge.svg)](https://codecov.io/gh/tschm/scribble)
 
