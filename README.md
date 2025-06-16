@@ -1,4 +1,4 @@
-# ✍️ [Scribble](https://tschm.github.io/scribble)
+# ✍️ Scribble
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/tschm/scribble/badge)](https://www.codefactor.io/repository/github/tschm/scribble)
