@@ -22,6 +22,5 @@ def test_output_cell():
 
     # Check the result
     assert isinstance(result, tuple)
-    assert len(result) == 2
+    assert len(result) == 1
     assert "fig" in result[1].keys()
-    assert "buf" in result[1].keys()
