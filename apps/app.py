@@ -16,7 +16,6 @@ __generated_with = "0.13.15"
 app = marimo.App()
 
 with app.setup:
-    import base64
     from io import StringIO
     from itertools import chain
 
