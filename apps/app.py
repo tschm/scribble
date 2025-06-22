@@ -4,6 +4,7 @@
 #     "marimo==0.13.15",
 #     "numpy==2.2.3",
 #     "plotly==6.1.2",
+#     "kaleido==1.0.0"
 # ]
 # ///
 """Marimo app for generating table cards."""
@@ -56,23 +57,23 @@ def function_map():
     }
 
 
-@app.function
-def create_download_link(data: str, filename: str, mime: str = "text/plain"):
-    """Create a download link for Marimo notebooks (works in WASM).
-
-    Args:
-        data: The string content to download.
-        filename: The name of the downloaded file.
-        mime: The MIME type of the file (default is "text/plain").
-
-    Returns:
-        mo.md object with a download anchor tag.
-
-    """
-    b64 = base64.b64encode(data.encode()).decode()
-    href = f'data:{mime};base64,{b64}'
-    html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
-    return html
+#@app.function
+#def create_download_link(data: str, filename: str, mime: str = "text/plain"):
+#    """Create a download link for Marimo notebooks (works in WASM).
+#
+#    Args:
+#        data: The string content to download.
+#        filename: The name of the downloaded file.
+#        mime: The MIME type of the file (default is "text/plain").
+#
+#    Returns:
+#        mo.md object with a download anchor tag.
+#
+#    """
+#    b64 = base64.b64encode(data.encode()).decode()
+#    href = f'data:{mime};base64,{b64}'
+#    html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
+#    return html
 
 
 @app.function
@@ -364,11 +365,11 @@ def __output(mo, dropdown, event, name):
 
     # Display the Plotly chart and provide a download button
     mo.vstack([
-        mo.ui.plotly(fig),
-        mo.md(create_download_link(
-            data=buf.read(),
-            filename=f"{name.value}_{event.value}_plot.html"
-        ))
+        mo.ui.plotly(fig)
+        #mo.md(create_download_link(
+        #    data=buf.read(),
+        #    filename=f"{name.value}_{event.value}_plot.html"
+        #))
     ])
     return
 
