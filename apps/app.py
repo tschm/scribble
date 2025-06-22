@@ -16,7 +16,7 @@ __generated_with = "0.13.15"
 app = marimo.App()
 
 with app.setup:
-    from io import StringIO
+    #from io import StringIO
     from itertools import chain
 
     import numpy as np
@@ -54,25 +54,6 @@ def function_map():
         "sinh(3*z)": lambda z: np.sinh(3*z),
         "exp((-1+2j)*z)": lambda z: np.exp((-1+2j)*z),
     }
-
-
-#@app.function
-#def create_download_link(data: str, filename: str, mime: str = "text/plain"):
-#    """Create a download link for Marimo notebooks (works in WASM).
-#
-#    Args:
-#        data: The string content to download.
-#        filename: The name of the downloaded file.
-#        mime: The MIME type of the file (default is "text/plain").
-#
-#    Returns:
-#        mo.md object with a download anchor tag.
-#
-#    """
-#    b64 = base64.b64encode(data.encode()).decode()
-#    href = f'data:{mime};base64,{b64}'
-#    html = f'<a download="{filename}" href="{href}" target="_blank">📥 Download {filename}</a>'
-#    return html
 
 
 @app.function
@@ -357,19 +338,8 @@ def __output(mo, dropdown, event, name):
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
 
-    # Export Plotly figure to PNG bytes
-    buf = StringIO()
-    fig.write_html(buf, include_plotlyjs="cdn")
-    buf.seek(0)
-
-    # Display the Plotly chart and provide a download button
-    mo.vstack([
-        mo.ui.plotly(fig)
-        #mo.md(create_download_link(
-        #    data=buf.read(),
-        #    filename=f"{name.value}_{event.value}_plot.html"
-        #))
-    ])
+    # Display the Plotly chart
+    mo.ui.plotly(fig)
     return
 
 
