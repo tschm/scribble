@@ -37,7 +37,7 @@ jobs:
   marimo:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
-      - uses: tschm/marimushka/actions/export@v0.0.16
+      - uses: jebel-quant/marimushka@v0.1.1
         with:
           apps: 'apps'
           publish: 'true'
