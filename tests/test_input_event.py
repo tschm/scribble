@@ -1,5 +1,4 @@
 """Tests for the __input_event function in app.py."""
-import marimo as mo
 
 from apps.app import __input_event, __input_function, __input_name
 
@@ -22,7 +21,7 @@ def test_input_event():
 
     """
     # Run the cell
-    result = __input_event.run(mo=mo)
+    result = __input_event.run()
 
     # Check that the cell returns a tuple where the second element is a dictionary containing the event
     assert isinstance(result, tuple)
@@ -44,7 +43,7 @@ def test_input_name():
         "name" is not found in the second element.
 
     """
-    result = __input_name.run(mo=mo)
+    result = __input_name.run()
     assert isinstance(result, tuple)
     assert len(result) == 2
     assert "name" in result[1]
@@ -65,7 +64,7 @@ def test_input_function():
         the expected tuple structure or key requirements.
 
     """
-    result = __input_function.run(mo=mo)
+    result = __input_function.run()
     assert isinstance(result, tuple)
     assert len(result) == 2
     assert "dropdown" in result[1]

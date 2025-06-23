@@ -1,8 +1,6 @@
 """Tests for the __output cell in app.py."""
 from unittest.mock import MagicMock
 
-import marimo as mo
-
 from apps.app import __output
 
 
@@ -18,7 +16,7 @@ def test_output_cell():
     mock_event.value = "Test Event"
     mock_name.value = "Test Name"
 
-    result = __output.run(mo=mo, dropdown=mock_dropdown, event=mock_event, name=mock_name)
+    result = __output.run(dropdown=mock_dropdown, event=mock_event, name=mock_name)
 
     # Check the result
     assert isinstance(result, tuple)
