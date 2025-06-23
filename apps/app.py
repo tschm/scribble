@@ -16,24 +16,12 @@ __generated_with = "0.13.15"
 app = marimo.App()
 
 with app.setup:
-    #from io import StringIO
     from itertools import chain
 
+    import marimo as mo
     import numpy as np
     import plotly.graph_objs as go
     from plotly.subplots import make_subplots
-
-@app.cell
-def _():
-    """Import the necessary modules and returns them as a tuple.
-
-    Returns:
-        tuple: A tuple containing the imported modules.
-
-    """
-    import marimo as mo
-    return (mo,)
-
 
 @app.function
 def function_map():
@@ -299,7 +287,7 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
 
 
 @app.cell
-def __input_name(mo):
+def __input_name():
     name = mo.ui.text(placeholder="Name...")
     mo.md(
         f"""
@@ -309,7 +297,7 @@ def __input_name(mo):
 
 
 @app.cell
-def __input_function(mo):
+def __input_function():
 
     # Create dropdown with function names
     options = list(function_map().keys())
@@ -324,7 +312,7 @@ def __input_function(mo):
 
 
 @app.cell
-def __input_event(mo):
+def __input_event():
     event = mo.ui.text(placeholder="Event...")
     mo.md(
         f"""
@@ -334,7 +322,7 @@ def __input_event(mo):
 
 
 @app.cell
-def __output(mo, dropdown, event, name):
+def __output(dropdown, event, name):
 
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
 
