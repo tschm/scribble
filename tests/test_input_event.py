@@ -1,5 +1,4 @@
 """Tests for the __input_event function in app.py."""
-import marimo as mo
 
 from apps.app import __input_event, __input_function, __input_name
 
