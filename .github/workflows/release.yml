@@ -40,7 +40,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: jebel-quant/marimushka@v0.1.1
+      - uses: jebel-quant/marimushka@v0.1.2
         with:
           apps: 'apps'
 
