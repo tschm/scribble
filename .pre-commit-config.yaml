@@ -25,6 +25,6 @@ repos:
         args: ["--verbose"]
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.36.2
+    rev: v1.37.0
     hooks:
       - id: typos
