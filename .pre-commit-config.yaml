@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.12.0'
+    rev: 'v0.14.1'
     hooks:
       - id: ruff
         args: [ --fix, --exit-non-zero-on-fix, --unsafe-fixes ]
@@ -17,7 +17,7 @@ repos:
       - id: markdownlint
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.1
+    rev: 0.34.1
     hooks:
       - id: check-renovate
         args: ["--verbose"]
@@ -25,6 +25,6 @@ repos:
         args: ["--verbose"]
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.33.1
+    rev: v1.38.1
     hooks:
       - id: typos
