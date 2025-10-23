@@ -9,7 +9,6 @@
 # ///
 """Marimo app for generating table cards."""
 
-
 import marimo
 
 __generated_with = "0.13.15"
@@ -22,6 +21,7 @@ with app.setup:
     import numpy as np
     import plotly.graph_objs as go
     from plotly.subplots import make_subplots
+
 
 @app.function
 def function_map():
@@ -38,9 +38,9 @@ def function_map():
 
     """
     return {
-        "tanh((-1+2j)*z)": lambda z: np.tanh((-1+2j)*z),
-        "sinh(3*z)": lambda z: np.sinh(3*z),
-        "exp((-1+2j)*z)": lambda z: np.exp((-1+2j)*z),
+        "tanh((-1+2j)*z)": lambda z: np.tanh((-1 + 2j) * z),
+        "sinh(3*z)": lambda z: np.sinh(3 * z),
+        "exp((-1+2j)*z)": lambda z: np.exp((-1 + 2j) * z),
     }
 
 
@@ -64,7 +64,7 @@ def letter(x: str) -> np.ndarray:
         The uppercase letter or space to be represented. Must be a single
         character string.
 
-    Returns
+    Returns:
     -------
     numpy.ndarray
         A NumPy array containing complex numbers representing the specified
@@ -122,7 +122,7 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
     fct
         A transformation function applied to the set of interpolated points.
 
-    Returns
+    Returns:
     -------
     list[np.ndarray]
         A flattened list of transformed points obtained by applying the transformation
@@ -139,7 +139,6 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
         """
         for a, b in zip(points[:-1], points[1:], strict=False):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
-
 
     segments = []
     for i, _letter in enumerate(string):
@@ -273,8 +272,6 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
         for trace in traces:
             fig.add_trace(trace, row=2, col=1)
 
-
-
     # Create the figure with subplots: 2 rows, 1 column
     fig = _create_fig()
     _create_annotation(fig, word=f"{name}<br>{fct}<br>{event}")
@@ -298,7 +295,6 @@ def __input_name():
 
 @app.cell
 def __input_function():
-
     # Create dropdown with function names
     options = list(function_map().keys())
     dropdown = mo.ui.dropdown(options=options, value="sinh(3*z)")
@@ -323,7 +319,6 @@ def __input_event():
 
 @app.cell
 def __output(dropdown, event, name):
-
     fig = create(name=name.value, fct=dropdown.value, event=event.value, n=100)
 
     # Display the Plotly chart

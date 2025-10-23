@@ -1,4 +1,5 @@
 """Tests for the series function."""
+
 import numpy as np
 import pytest
 
@@ -19,9 +20,10 @@ def fct():
         sine of 3 times the input value.
 
     """
+
     def sinh_func(z):
         """Hyperbolic sine function: sinh(3*z)."""
-        return np.sinh(3*z)
+        return np.sinh(3 * z)
 
     return sinh_func
 
@@ -55,7 +57,7 @@ def test_series_with_multiple_letters(fct):
 
 def test_series_with_function(fct):
     """Test the series function with a non-trivial function."""
-    result = series("A", n=10, fct=lambda z: z*z)
+    result = series("A", n=10, fct=lambda z: z * z)
     assert len(result) > 0
 
     # The function z*z should square each point
