@@ -1,41 +1,72 @@
-# Makefile for the scribble project
-# This file contains commands for setting up the environment, formatting code,
-# running tests, and other maintenance tasks.
+## Makefile for config-templates: developer tasks orchestrated via go-task
+#
+# This Makefile wraps the Taskfile.yml commands and provides a friendly
+# `make help` index. Lines with `##` after a target are parsed into help text,
+# and lines starting with `##@` create section headers in the help output.
+#
+# Colors for pretty output in help messages
+BLUE := \033[36m
+BOLD := \033[1m
+GREEN := \033[32m
+RED := \033[31m
+RESET := \033[0m
 
+# Default goal when running `make` with no target
 .DEFAULT_GOAL := help
 
-# Use system Python with uv
-UV_SYSTEM_PYTHON := 1
+# Declare phony targets (they don't produce files)
+.PHONY: install-task install clean test marimo book fmt deptry help all
 
-uv:
-	@curl -LsSf https://astral.sh/uv/install.sh | sh
+##@ Bootstrap
+install-task: ## ensure go-task (Taskfile) is installed
+	@mkdir -p ./bin;
+	# install task
+	@if command -v ./bin/task >/dev/null 2>&1; then \
+		printf "$(GREEN)task is already installed$(RESET)\n"; \
+	else \
+		printf "$(BLUE)Installing go-task (Taskfile)$(RESET)\n"; \
+		sh -c "$$(curl --location https://taskfile.dev/install.sh)" -- -d -b ./bin; \
+	fi
+	# install uv
+	@if [ -x "./bin/uv" ]; then \
+		printf "${BLUE}[INFO] uv already present in ./bin, skipping installation${RESET}\n"; \
+	else \
+		curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR="./bin" sh || { printf "${RED}[ERROR] Failed to install uv${RESET}\n"; exit 1; }; \
+	fi
+	# verify task is installed
+	./bin/task --version
 
-# Format and lint the code using pre-commit
-.PHONY: fmt
-fmt: uv ## Run autoformatting and linting
-	@uvx pre-commit run --all-files
+install: install-task ## install
+	./bin/task build:install
 
-# Clean up generated files
-.PHONY: clean
-clean:  ## Clean up caches and build artifacts
-	@git clean -X -d -f
+clean: install-task ## clean
+	./bin/task cleanup:clean
 
-# Run the test suite using pytest with coverage
-.PHONY: test
-test: uv ## Run tests with coverage
-	echo "# Installing dependencies..."
-	grep -A 10 "# dependencies = \[" app.py | grep -E "^#\s+\".*\"" | cut -d'"' -f2 | xargs -I{} uv pip install {}
-	uv pip install --no-cache-dir pytest
-	uv run pytest -vv tests
+##@ Development and Testing
+test: install ## run all tests
+	./bin/task docs:test
 
-# Display help information about available make targets
-.PHONY: help
-help:  ## Display this help screen
-	@echo -e "\033[1mAvailable commands:\033[0m"
-	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' | sort
+marimo: install ## fire up Marimo server
+	./bin/task docs:marimo
 
-# Install and run Marimo for interactive notebooks
-.PHONY: marimo
-marimo: uv ## Install Marimo
-	# will install dependencies straight out of app.py
-	@uvx marimo edit apps/app.py --sandbox
+##@ Documentation
+book: test ## compile the companion book
+	./bin/task docs:docs
+	./bin/task docs:marimushka
+	./bin/task docs:book
+
+fmt: install ## check the pre-commit hooks and the linting
+	./bin/task quality:lint
+
+deptry: install  ## check deptry
+	./bin/task quality:deptry
+
+all: fmt deptry test book ## Run everything
+	echo "Run fmt, deptry, test and book"
+
+##@ Meta
+help: ## Display this help message
+	+@printf "$(BOLD)Usage:$(RESET)\n"
+	+@printf "  make $(BLUE)<target>$(RESET)\n\n"
+	+@printf "$(BOLD)Targets:$(RESET)\n"
+	+@awk 'BEGIN {FS = ":.*##"; printf ""} /^[a-zA-Z_-]+:.*?##/ { printf "  $(BLUE)%-15s$(RESET) %s\n", $$1, $$2 } /^##@/ { printf "\n$(BOLD)%s$(RESET)\n", substr($$0, 5) }' $(MAKEFILE_LIST)

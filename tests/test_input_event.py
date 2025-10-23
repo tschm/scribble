@@ -13,7 +13,7 @@ def test_input_event():
     and validates that the output is a tuple containing a dictionary with an `event`
     key.
 
-    Raises
+    Raises:
     ------
     AssertionError
         If the result is not a tuple or does not have a 'event' key in the second
@@ -29,6 +29,7 @@ def test_input_event():
     assert "event" in result[1]
     print(result[1]["event"])
 
+
 def test_input_name():
     """Test the `run` method of the `__input_name` module.
 
@@ -36,7 +37,7 @@ def test_input_name():
     with a length of 2, contains a key "name" in the second element, and prints its
     value.
 
-    Raises
+    Raises:
     ------
     AssertionError
         If the result is not a tuple, does not have a length of 2, or if the key
@@ -48,7 +49,6 @@ def test_input_name():
     assert len(result) == 2
     assert "name" in result[1]
     print(result[1]["name"])
-
 
 
 def test_input_function():

@@ -1,4 +1,5 @@
 """Tests for the __output cell in app.py."""
+
 from unittest.mock import MagicMock
 
 from apps.app import __output
