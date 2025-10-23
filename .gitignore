@@ -3,7 +3,7 @@
 .venv
 .ruff_cache
 
-__marimo__
+bin
 
 _tests
 _book
