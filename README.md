@@ -3,7 +3,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/tschm/scribble/badge)](https://www.codefactor.io/repository/github/tschm/scribble)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://github.com/renovatebot/renovate)
-[![TEST](https://github.com/tschm/scribble/actions/workflows/test.yml/badge.svg)](https://github.com/tschm/scribble/actions/workflows/test.yml)
 
 ![Happy Birthday](Happy%20Birthday.png)
 
