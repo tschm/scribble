@@ -94,8 +94,6 @@ make test
 
 This will install the necessary dependencies and run the tests using pytest.
 
-[![codecov](https://codecov.io/gh/tschm/scribble/branch/main/graph/badge.svg)](https://codecov.io/gh/tschm/scribble)
-
 ## 🤝 Contributing
 
 Contributions are welcome! Here's how you can contribute:
