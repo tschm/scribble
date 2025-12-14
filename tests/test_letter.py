@@ -8,14 +8,14 @@ from apps.app import letter
 
 def test_letter_returns_array():
     """Test that the letter function returns a numpy array."""
-    result = letter("A")
+    result = letter("a")
     assert isinstance(result, np.ndarray)
 
 
 def test_letter_uppercase():
     """Test that the letter function handles uppercase letters correctly."""
-    result = letter("A")
-    # A should have 5 points
+    result = letter("a")
+    # a should have 5 points
     assert len(result) == 5
     # First point should be 0
     assert result[0] == 0
@@ -26,7 +26,7 @@ def test_letter_uppercase():
 def test_letter_lowercase():
     """Test that the letter function handles lowercase letters correctly."""
     # The function should convert lowercase to uppercase
-    upper_result = letter("A")
+    upper_result = letter("a")
     lower_result = letter("a")
     np.testing.assert_array_equal(upper_result, lower_result)
 
@@ -44,7 +44,7 @@ def test_letter_invalid():
 
 
 def test_all_letters_defined():
-    """Test that all letters A-Z and space are defined."""
+    """Test that all letters a-Z and space are defined."""
     import string
 
     for char in string.ascii_uppercase + " ":
@@ -54,6 +54,6 @@ def test_all_letters_defined():
 
 def test_letter_complex_values():
     """Test that the letter function returns complex values."""
-    result = letter("A")
+    result = letter("a")
     # Check that at least one point has a non-zero imaginary part
     assert any(point.imag != 0 for point in result if point != 0)

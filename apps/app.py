@@ -32,7 +32,7 @@ def function_map():
     complex number argument and evaluate the associated expressions.
 
     Returns:
-        Dict[str, Callable[[complex], complex]]: A dictionary mapping string representations
+        Dict[str, Callable[[complex], complex]]: a dictionary mapping string representations
         of mathematical expressions to lambda functions that evaluate these expressions
         for a given complex input.
 
@@ -67,12 +67,12 @@ def letter(x: str) -> np.ndarray:
     Returns:
     -------
     numpy.ndarray
-        A NumPy array containing complex numbers representing the specified
+        a NumPy array containing complex numbers representing the specified
         letter's outline. Returns an empty array for a space character.
 
     """
     __letters = {
-        "A": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
+        "a": [0, 0.4 + 1j, 0.8, 0.6 + 0.5j, 0.2 + 0.5j],
         "B": [0, 1j, 0.8 + 0.9j, 0.8 + 0.6j, 0.5j, 0.8 + 0.4j, 0.8 + 0.1j, 0],
         "C": [0.8 + 1j, 0.8j, 0.2j, 0.8],
         "D": [0, 0.8 + 0.1j, 0.8 + 0.9j, 1j, 0],
@@ -116,16 +116,16 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
     Parameters
     ----------
     string : str
-        A string where each character will be transformed into a series of points.
+        a string where each character will be transformed into a series of points.
     n : int
         The number of auxiliary points to generate for each segment of a letter.
     fct
-        A transformation function applied to the set of interpolated points.
+        a transformation function applied to the set of interpolated points.
 
     Returns:
     -------
     list[np.ndarray]
-        A flattened list of transformed points obtained by applying the transformation
+        a flattened list of transformed points obtained by applying the transformation
         function to segments of each letter's representation.
 
     """
@@ -176,7 +176,7 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
 
     Returns:
         go.Figure
-            A Plotly figure containing the constructed subplots and relevant
+            a Plotly figure containing the constructed subplots and relevant
             visualizations.
 
     """

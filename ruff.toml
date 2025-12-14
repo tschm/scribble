@@ -11,7 +11,7 @@ exclude = ["**/[{][{]*/", "**/*[}][}]*/"]
 
 [lint]
 # Available rule sets in Ruff:
-# A: flake8-builtins - Check for python builtins being used as variables or parameters
+# a: flake8-builtins - Check for python builtins being used as variables or parameters
 # B: flake8-bugbear - Find likely bugs and design problems
 # C4: flake8-comprehensions - Helps write better list/set/dict comprehensions
 # D: pydocstyle - Check docstring style

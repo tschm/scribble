@@ -1,4 +1,4 @@
-template-repository: "tschm/.config-templates"
+template-repository: "jebel-quant/rhiza"
 template-branch: "main"
 include: |
     .github
@@ -14,3 +14,4 @@ include: |
 exclude: |
     .github/workflows/docker.yml
     .github/workflows/devcontainer.yml
+

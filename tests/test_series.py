@@ -16,7 +16,7 @@ def fct():
     multiplied by 3.
 
     Returns:
-        Callable[[Any], Any]: A function that computes the hyperbolic
+        Callable[[Any], Any]: a function that computes the hyperbolic
         sine of 3 times the input value.
 
     """
@@ -33,13 +33,13 @@ def fct():
 
 def test_series_returns_list(fct):
     """Test that the series function returns a list."""
-    result = series("A", n=10, fct=fct)
+    result = series("a", n=10, fct=fct)
     assert isinstance(result, list)
 
 
 def test_series_with_single_letter(fct):
     """Test the series function with a single letter."""
-    result = series("A", n=10, fct=fct)
+    result = series("a", n=10, fct=fct)
     assert len(result) > 0
     for segment in result:
         assert isinstance(segment, np.ndarray)
@@ -51,17 +51,17 @@ def test_series_with_multiple_letters(fct):
     assert len(result) > 0
 
     # Result for multiple letters should be longer than for a single letter
-    single_letter_result = series("A", n=10, fct=fct)
+    single_letter_result = series("a", n=10, fct=fct)
     assert len(result) > len(single_letter_result)
 
 
 def test_series_with_function(fct):
     """Test the series function with a non-trivial function."""
-    result = series("A", n=10, fct=lambda z: z * z)
+    result = series("a", n=10, fct=lambda z: z * z)
     assert len(result) > 0
 
     # The function z*z should square each point
-    identity_result = series("A", n=10, fct=lambda z: z)
+    identity_result = series("a", n=10, fct=lambda z: z)
 
     # The results should have the same length
     assert len(result) == len(identity_result)
