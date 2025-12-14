@@ -1,5 +1,5 @@
-# This file is part of the tschm/.config-templates repository
-# (https://github.com/tschm/.config-templates).
+# This file is part of the jebel-quant/rhiza repository
+# (https://github.com/jebel-quant/rhiza).
 #
 # Maximum line length for the entire project
 line-length = 120
@@ -11,7 +11,7 @@ exclude = ["**/[{][{]*/", "**/*[}][}]*/"]
 
 [lint]
 # Available rule sets in Ruff:
-# a: flake8-builtins - Check for python builtins being used as variables or parameters
+# A: flake8-builtins - Check for python builtins being used as variables or parameters
 # B: flake8-bugbear - Find likely bugs and design problems
 # C4: flake8-comprehensions - Helps write better list/set/dict comprehensions
 # D: pydocstyle - Check docstring style
