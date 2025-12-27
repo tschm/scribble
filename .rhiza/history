@@ -33,6 +33,7 @@ CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Makefile
 pytest.ini
+renovate.json
 ruff.toml
 tests/Makefile.tests
 tests/test_rhiza/README.md
