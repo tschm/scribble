@@ -10,5 +10,7 @@ license = { file = "LICENSE" }
 dependencies = [
   "plotly",
   "numpy",
-  "marimo"
+  "marimo",
+  "pandas>=2.3.3",
+  "packaging>=25.0",
 ]
