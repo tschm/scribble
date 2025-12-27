@@ -12,6 +12,7 @@ include:
 - ruff.toml
 - pytest.ini
 - .rhiza
+- renovate.json
 exclude:
 - .github/workflows/docker.yml
 - .github/workflows/devcontainer.yml
