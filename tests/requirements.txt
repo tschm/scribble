@@ -1,4 +1,4 @@
-marimo==0.16.4
+marimo==0.18.4
 numpy==2.2.3
 plotly==6.1.2
 kaleido==1.0.0
