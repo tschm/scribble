@@ -9,7 +9,7 @@ license = { file = "LICENSE" }
 
 dependencies = []
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "marimo>=0.18.0",
     "numpy>=2.4.0",
