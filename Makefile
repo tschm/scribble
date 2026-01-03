@@ -90,7 +90,7 @@ install: install-uv install-extras ## install
 	@if [ -f "pyproject.toml" ]; then \
 	  if [ -f "uv.lock" ]; then \
 	    printf "${BLUE}[INFO] Installing dependencies from lock file${RESET}\n"; \
-	    ${UV_BIN} sync --all-extras --frozen || { printf "${RED}[ERROR] Failed to install dependencies${RESET}\n"; exit 1; }; \
+	    ${UV_BIN} sync --all-extras --all-groups --frozen || { printf "${RED}[ERROR] Failed to install dependencies${RESET}\n"; exit 1; }; \
 	  else \
 	    printf "${YELLOW}[WARN] uv.lock not found. Generating lock file and installing dependencies...${RESET}\n"; \
 	    ${UV_BIN} sync --all-extras || { printf "${RED}[ERROR] Failed to install dependencies${RESET}\n"; exit 1; }; \
@@ -168,15 +168,26 @@ deptry: install-uv ## Run deptry
 	fi
 
 	@if [ -d ${MARIMO_FOLDER} ]; then \
-		$(UVX_BIN) deptry ${MARIMO_FOLDER}; \
+		if [ -d ${SOURCE_FOLDER} ]; then \
+			$(UVX_BIN) deptry ${MARIMO_FOLDER} ${SOURCE_FOLDER} --ignore DEP004; \
+		else \
+		  	$(UVX_BIN) deptry ${MARIMO_FOLDER} --ignore DEP004; \
+		fi \
 	fi
 
 fmt: install-uv ## check the pre-commit hooks and the linting
 	@${UVX_BIN} pre-commit run --all-files
 
 ##@ Releasing and Versioning
-bump: install-uv ## bump version
-	@UV_BIN="${UV_BIN}" /bin/sh "${SCRIPTS_FOLDER}/bump.sh"
+bump: ## bump version
+	@if [ -f "pyproject.toml" ]; then \
+		$(MAKE) install; \
+		${UVX_BIN} "rhiza[tools]>=0.8.6" tools bump; \
+		printf "${BLUE}[INFO] Updating uv.lock file...${RESET}\n"; \
+		${UV_BIN} lock; \
+	else \
+		printf "${YELLOW}[WARN] No pyproject.toml found, skipping bump${RESET}\n"; \
+	fi 
 
 release: install-uv ## create tag and push to remote with prompts
 	@UV_BIN="${UV_BIN}" /bin/sh "${SCRIPTS_FOLDER}/release.sh"
