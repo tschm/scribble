@@ -16,3 +16,9 @@ dev = [
     "plotly>=6.5.0",
     "pandas>=2.3.3"
 ]
+
+[tool.deptry.package_module_name_map]
+marimo = "marimo"
+numpy = "numpy"
+plotly = "plotly"
+pandas = "pandas"
