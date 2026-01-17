@@ -14,7 +14,8 @@ dev = [
     "marimo>=0.18.0",
     "numpy>=2.4.0",
     "plotly>=6.5.0",
-    "pandas>=2.3.3"
+    "pandas>=2.3.3",
+    "pytest>=9.0.2",
 ]
 
 [tool.deptry.package_module_name_map]
@@ -22,3 +23,11 @@ marimo = "marimo"
 numpy = "numpy"
 plotly = "plotly"
 pandas = "pandas"
+
+[tool.pylint.messages_control]
+disable = [
+    "import-error",       # Dependencies not in pylint's environment
+    "reimported",         # Marimo uses `import marimo` + `import marimo as mo`
+    "invalid-name",       # Marimo auto-generates __generated_with
+    "redefined-outer-name" # Pytest fixtures redefine outer scope names
+]

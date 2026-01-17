@@ -23,7 +23,8 @@ def test_input_event():
     # Run the cell
     result = __input_event.run()
 
-    # Check that the cell returns a tuple where the second element is a dictionary containing the event
+    # Check that the cell returns a tuple where the second element
+    # is a dictionary containing the event
     assert isinstance(result, tuple)
     assert len(result) == 2
     assert "event" in result[1]

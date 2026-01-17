@@ -323,7 +323,6 @@ def __output(dropdown, event, name):
 
     # Display the Plotly chart
     mo.ui.plotly(fig)
-    return
 
 
 if __name__ == "__main__":

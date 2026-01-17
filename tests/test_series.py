@@ -28,7 +28,7 @@ def fct():
     return sinh_func
 
 
-"""Tests for the series function in the _series cell."""
+# Tests for the series function in the _series cell.
 
 
 def test_series_returns_list(fct):
@@ -55,7 +55,7 @@ def test_series_with_multiple_letters(fct):
     assert len(result) > len(single_letter_result)
 
 
-def test_series_with_function(fct):
+def test_series_with_function():
     """Test the series function with a non-trivial function."""
     result = series("a", n=10, fct=lambda z: z * z)
     assert len(result) > 0

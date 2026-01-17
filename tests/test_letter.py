@@ -1,5 +1,7 @@
 """Tests for the letter function."""
 
+import string
+
 import numpy as np
 import pytest
 
@@ -45,8 +47,6 @@ def test_letter_invalid():
 
 def test_all_letters_defined():
     """Test that all letters a-Z and space are defined."""
-    import string
-
     for char in string.ascii_uppercase + " ":
         result = letter(char)
         assert isinstance(result, np.ndarray)

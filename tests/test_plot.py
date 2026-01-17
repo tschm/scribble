@@ -1,10 +1,3 @@
-"""Testing the plots."""
-
-import plotly.graph_objs as go
-import pytest
-
-from apps.app import create
-
 """Test suite for assessing the behavior and features of the plot creation function.
 
 This test module is designed to validate the correctness and flexibility of the `create` function,
@@ -13,20 +6,24 @@ function's output under different inputs, edge cases, and expected characteristi
 figure object.
 """
 
+import plotly.graph_objs as go
+import pytest
+
+from apps.app import create
+
 
 @pytest.mark.parametrize(
-    "name, fct, event, n, test_id",
+    ("name", "fct", "event", "n"),
     [
-        ("Thomas", "sinh(3*z)", "wedding", 100, "default"),  # Default parameters
-        ("Test", "sinh(3*z)", "wedding", 100, "different_name"),  # Test with different name
-        ("Thomas", "exp((-1+2j)*z)", "wedding", 100, "different_function"),  # Test with different function
-        ("Thomas", "sinh(3*z)", "test", 100, "different_event"),  # Test with different event
-        ("Thomas", "sinh(3*z)", "wedding", 50, "different_n"),  # Test with different n
-        ("", "sinh(3*z)", "wedding", 100, "empty_name"),  # Test with empty name
+        ("Thomas", "sinh(3*z)", "wedding", 100),
+        ("Test", "sinh(3*z)", "wedding", 100),
+        ("Thomas", "exp((-1+2j)*z)", "wedding", 100),
+        ("Thomas", "sinh(3*z)", "test", 100),
+        ("Thomas", "sinh(3*z)", "wedding", 50),
+        ("", "sinh(3*z)", "wedding", 100),
     ],
-    ids=lambda param: param[4] if isinstance(param, tuple) else str(param),
 )
-def test_create_returns_figure(name, fct, event, n, test_id):
+def test_create_returns_figure(name, fct, event, n):
     """Test that the create function returns a plotly Figure with various parameters."""
     fig = create(name, fct, event, n=n)
     assert isinstance(fig, go.Figure)
