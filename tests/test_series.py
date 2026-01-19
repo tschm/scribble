@@ -6,7 +6,7 @@ import pytest
 from apps.app import series
 
 
-@pytest.fixture()
+@pytest.fixture
 def fct():
     """Hyperbolic sine function fixture.
 

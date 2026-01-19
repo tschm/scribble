@@ -9,6 +9,8 @@
 # ///
 """Marimo app for generating table cards."""
 
+import itertools
+
 import marimo
 
 __generated_with = "0.13.15"
@@ -137,7 +139,7 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
         We represent each such segment as a collection of n auxiliary points.
 
         """
-        for a, b in zip(points[:-1], points[1:], strict=False):
+        for a, b in itertools.pairwise(points):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
     segments = []
