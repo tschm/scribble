@@ -9,8 +9,6 @@
 # ///
 """Marimo app for generating table cards."""
 
-import itertools
-
 import marimo
 
 __generated_with = "0.13.15"
@@ -18,6 +16,7 @@ app = marimo.App()
 
 with app.setup:
     from itertools import chain
+    from itertools import pairwise
 
     import marimo as mo
     import numpy as np
@@ -139,7 +138,7 @@ def series(string: str, n: int, fct) -> list[np.ndarray]:
         We represent each such segment as a collection of n auxiliary points.
 
         """
-        for a, b in itertools.pairwise(points):
+        for a, b in pairwise(points):
             yield np.linspace(a.real, b.real, n) + 1j * np.linspace(a.imag, b.imag, n)
 
     segments = []
@@ -212,7 +211,7 @@ def create(name: str, fct: str, event: str, n: int = 100) -> go.Figure:
     def _remove_axis(fig: go.Figure) -> go.Figure:
         # Update layout settings
         fig.update_layout(
-            plot_bgcolor="white",  # White background for clean look
+            plot_bgcolor="white",  # White background for a clean look
             paper_bgcolor="white",  # White paper background
             showlegend=False,  # No legend needed
             margin={"l": 30, "r": 30, "t": 30, "b": 30},  # Margins around the plot
