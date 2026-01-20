@@ -15,8 +15,7 @@ __generated_with = "0.13.15"
 app = marimo.App()
 
 with app.setup:
-    from itertools import chain
-    from itertools import pairwise
+    from itertools import chain, pairwise
 
     import marimo as mo
     import numpy as np
