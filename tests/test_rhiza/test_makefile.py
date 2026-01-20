@@ -98,7 +98,7 @@ def run_make(
     flags = "-sn" if dry_run else "-s"
     cmd.insert(1, flags)
     logger.info("Running command: %s", " ".join(cmd))
-    result = subprocess.run(cmd, capture_output=True, text=True)  # noqa: S603
+    result = subprocess.run(cmd, capture_output=True, text=True)
     logger.debug("make exited with code %d", result.returncode)
     if result.stdout:
         logger.debug("make stdout (truncated to 500 chars):\n%s", result.stdout[:500])
@@ -113,9 +113,9 @@ def run_make(
 def setup_rhiza_git_repo():
     """Initialize a git repository and set remote to rhiza."""
     git = shutil.which("git") or "/usr/bin/git"
-    subprocess.run([git, "init"], check=True, capture_output=True)  # noqa: S603
+    subprocess.run([git, "init"], check=True, capture_output=True)
     subprocess.run(
-        [git, "remote", "add", "origin", "https://github.com/jebel-quant/rhiza"],  # noqa: S603
+        [git, "remote", "add", "origin", "https://github.com/jebel-quant/rhiza"],
         check=True,
         capture_output=True,
     )
@@ -158,6 +158,26 @@ class TestMakefile:
         # Check for uv command with the configured path
         # expected_uv = f"{expected_uv_install_dir}/uv"
         # assert f"{expected_uv} run pytest" in out
+
+    def test_test_target_without_source_folder(self, logger, tmp_path):
+        """Test target should run without coverage when SOURCE_FOLDER doesn't exist."""
+        # Update .env to set SOURCE_FOLDER to a non-existent directory
+        env_file = tmp_path / ".rhiza" / ".env"
+        env_content = env_file.read_text()
+        env_content += "\nSOURCE_FOLDER=nonexistent_src\n"
+        env_file.write_text(env_content)
+
+        # Create tests folder
+        tests_folder = tmp_path / "tests"
+        tests_folder.mkdir(exist_ok=True)
+
+        proc = run_make(logger, ["test"])
+        out = proc.stdout
+        # Should see warning about missing source folder
+        assert "if [ -d nonexistent_src ]" in out
+        # Should still run pytest but without coverage flags
+        assert "pytest tests" in out
+        assert "--html=_tests/html-report/report.html" in out
 
     def test_book_target_dry_run(self, logger):
         """Book target should run inline commands to assemble the book."""

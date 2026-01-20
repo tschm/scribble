@@ -23,11 +23,12 @@ marimo = "marimo"
 numpy = "numpy"
 plotly = "plotly"
 pandas = "pandas"
+pytest = "pytest"
 
 [tool.pylint.messages_control]
 disable = [
-    "import-error",       # Dependencies not in pylint's environment
-    "reimported",         # Marimo uses `import marimo` + `import marimo as mo`
-    "invalid-name",       # Marimo auto-generates __generated_with
-    "redefined-outer-name" # Pytest fixtures redefine outer scope names
+    "import-error",         # Dependencies not in pylint's environment
+    "reimported",           # Marimo uses `import marimo` + `import marimo as mo`
+    "invalid-name",         # Marimo auto-generates __generated_with
+    "redefined-outer-name"  # Pytest fixtures redefine outer scope names
 ]
