@@ -1,6 +1,6 @@
 [project]
 name = "scribble"
-version = "0.0.0"
+version = "1.0.0"
 description = "Companion materials for the Scribble project."
 readme = "README.md"
 requires-python = ">=3.12"
