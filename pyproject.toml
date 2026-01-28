@@ -6,7 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 authors = [{ name = "Thomas Schmelzer" }]
 license = { file = "LICENSE" }
-
+classifiers = [
+    "Private :: Do Not Upload",
+]
 dependencies = []
 
 [dependency-groups]
